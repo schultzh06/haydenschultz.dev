@@ -21,19 +21,20 @@ const { Content } = await render(project);
         <div class="grid gap-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
 
             <!-- Sticky side-bar (left) -->
-            <aside class="lg:sticky lg:top-20 lg:h-fit">
+            <aside class="lg:sticky lg:top-25 lg:h-fit">
 
-                <!-- Back button 
+                <!-- Back button -->
                 <a
                 href="/"
                 class="font-mono text-sm text-fg/50 transition-colors hover:text-accent"
                 >
                     &larr; Back
                 </a>
-                -->
+
+                <div class="mt-3 h-px w-full bg-fg/15" />
 
                 <!-- Role, Stack and Period -->
-                <dl class="space-y-6 font-mono text-xs lg:mt-4">
+                <dl class="space-y-6 font-mono text-xs mt-4">
                     {role && (
                     <div>
                         <dt class="uppercase tracking-[0.15em] text-fg/40">Role</dt>
@@ -49,6 +50,8 @@ const { Content } = await render(project);
                         <dd class="mt-2">{period}</dd>
                     </div>
                 </dl>
+                
+                <div class="mt-6 h-px w-full bg-fg/15" />
 
                 <!-- Repo and/or Demo Links -->
                 {(links.repo || links.demo) && (
