@@ -2,38 +2,58 @@
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 
-const projects = (await getCollection('projects', ({ data }) => !data.draft))
-  .sort((a, b) => a.data.order - b.data.order);
+const projects = (await getCollection('projects', ({ data }) => true))
+.sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout title="Hayden Schultz">
-  <main class="mx-auto max-w-5xl px-6 pb-24">
+<main class="mx-auto max-w-5xl px-6 pb-24">
 
-    <div class="py-24"></div>
+	<section class="grid gap-4 pb-24 pt-16 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+	<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">
+		/Hero
+	</p>
 
-    <section class="border-t border-fg/10">
-      {projects.map((project) => (
-        <a
-          href={`/projects/${project.id}`}
-          class="group grid gap-4 border-b border-fg/10 py-10 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20"
-        >
-          <div class="font-mono text-xs">
-            <p class="uppercase tracking-[0.15em] text-accent/70">{project.data.period}</p>
-            <p class="mt-2 text-fg/50">{project.data.tech.slice(0, 4).join(' · ')} · <i>more...</i></p>
-          </div>
+	<div>
+		<h1 class="font-display text-4xl leading-[1.1] sm:text-6xl">
+		Hayden Schultz
+		<p class="text-accent text-lg font-mono uppercase pt-1">Available for Summer 2027 internships</p>
+		</h1>
 
-          <div>
-            <h2 class="text-2xl transition-colors group-hover:text-accent sm:text-3xl">
-              {project.data.title}
-            </h2>
-            <p class="mt-3 leading-relaxed text-fg/70">{project.data.hook}</p>
-          </div>
-        </a>
-      ))}
-    </section>
+		<p class="mt-6 max-w-[40ch] text-lg leading-relaxed text-fg/70">
+		Computer Science and Cybersecurity at Worcester Polytechnic Institute, class of 2028. Looking for a software or security
+  		internship for <b>Summer 2027</b>.
+		</p>
+	</div>
+	</section>
+
+	<div class="grid gap-4 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+		<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">/Projects</p>
+	</div>
+	
+	<section class="mt-4 border-t border-fg/10">
+	{projects.map((project) => (
+		<a
+		href={`/projects/${project.id}`}
+		class="group grid gap-4 border-b border-fg/10 py-10 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20"
+		>
+		<div class="font-mono text-xs">
+			<p class="uppercase tracking-[0.15em] text-accent/70">{project.data.period}</p>
+			<p class="mt-2 text-fg/50">{project.data.tech.slice(0, 4).join(' · ')} · <i>more...</i></p>
+		</div>
+
+		<div>
+			<h2 class="text-2xl transition-colors group-hover:text-accent sm:text-3xl">
+			{project.data.title}
+			</h2>
+			<p class="mt-3 leading-relaxed text-fg/70">{project.data.hook}</p>
+		</div>
+		</a>
+	))}
+	</section>
 
 	<section class="grid gap-4 pt-16 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
-		<p class="font-mono text-xs uppercase tracking-[0.15em] text-accent/70">About</p>
+		<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">/About</p>
 
 		<div>
 			<p class="leading-relaxed text-fg/80">
@@ -55,5 +75,5 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
 		</div>
 	</section>
 
-  </main>
+</main>
 </Layout>
