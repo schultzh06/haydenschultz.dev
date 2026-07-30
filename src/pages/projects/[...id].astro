@@ -1,0 +1,218 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+import { Icon } from 'astro-icon/components';
+
+export async function getStaticPaths() {
+const projects = await getCollection('projects', ({ data }) => !data.draft);
+return projects.map((project) => ({
+    params: { id: project.id },
+    props: { project },
+}));
+}
+
+const { project } = Astro.props;
+const { title, hook, summary, role, period, tech, bullets, depth, limitations, links, writeups } =
+project.data;
+const { Content } = await render(project);
+---
+
+<Layout title={title} description={summary}>
+    <article class="mx-auto max-w-5xl px-6 pb-24 pt-8">
+        <div class="grid gap-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+
+            <!-- Sticky side-bar (left) -->
+            <aside class="lg:sticky lg:top-25 lg:h-fit">
+
+                <!-- Back button -->
+                <a
+                href="/"
+                class="font-mono text-sm text-fg/50 transition-colors hover:text-accent"
+                >
+                    &larr; Back
+                </a>
+
+                <div class="mt-3 h-px w-full bg-fg/15" />
+
+                <!-- Role, Stack and Period -->
+                <dl class="space-y-6 font-mono text-xs mt-4">
+                    {role && (
+                    <div>
+                        <dt class="uppercase tracking-[0.15em] text-fg/40">Role</dt>
+                        <dd class="mt-2">{role}</dd>
+                    </div>
+                    )}
+                    <div>
+                        <dt class="uppercase tracking-[0.15em] text-fg/40">Stack</dt>
+                        <dd class="mt-2 leading-relaxed">{tech.join(' · ')}</dd>
+                    </div>
+                    <div>
+                        <dt class="uppercase tracking-[0.15em] text-fg/40">Year</dt>
+                        <dd class="mt-2">{period}</dd>
+                    </div>
+                </dl>
+                
+                <div class="mt-6 h-px w-full bg-fg/15" />
+
+                <!-- Repo and/or Demo Links -->
+                {(links.repo || links.demo) && (
+                    <div class="mt-6 flex gap-3">
+                    {links.repo && (
+                        <a href={links.repo} target="_blank" rel="noopener noreferrer"
+                        class="font-mono text-xs underline underline-offset-4 hover:text-accent">
+                            <span class="flex flex-row items-center gap-2">
+                                <Icon name={"simple-icons:github"} class="h-[18px] w-[18px]"/> 
+                                Repo ↗
+                            </span>
+                        </a>
+                    )}
+                    {links.demo && (
+                        <a
+                        href={links.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="rounded-full bg-accent px-4 py-1.5 text-sm text-bg transition-opacity hover:opacity-90"
+                        >
+                        Demo &nearr;
+                        </a>
+                    )}
+                    </div>
+                )}
+            </aside>
+
+            <!-- Article bulk -->
+            <div>
+
+                <!-- Title and Hook (header) -->
+                <header class="mt-8">
+                    <h1 class="mt-2 text-4xl sm:text-5xl">{title}</h1>
+                    <p class="mt-4 text-lg leading-relaxed text-fg/70">{hook}</p>
+                </header>
+
+                <!-- Brief -->
+                <p class="mt-10 font-display text-xl leading-snug text-fg sm:text-2xl">
+                    {bullets.join(' ')}
+                </p>
+
+                <!-- Content -->
+                <div class="content mt-12">
+                    <Content />
+                </div>
+
+                <!-- Depth bullets -->
+                {depth && (
+                <section class="mt-12">
+                    <h2 class="font-mono text-xs uppercase tracking-[0.15em] text-accent">Under the hood</h2>
+                    <ul class="mt-4 space-y-3">
+                    {depth.map((point) => (
+                        <li class="flex gap-3 text-sm leading-relaxed text-fg/80">
+                        <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-accent"></span>
+                        <span>{point}</span>
+                        </li>
+                    ))}
+                    </ul>
+                </section>
+                )}
+
+                <!-- Limitations -->
+                {limitations && (
+                <section class="mt-12">
+                    <h2 class="font-mono text-xs uppercase tracking-[0.15em] text-accent">Limitations</h2>
+                    <ul class="mt-4 space-y-3">
+                    {limitations.map((point) => (
+                        <li class="flex gap-3 text-sm leading-relaxed text-fg/60">
+                        <span class="mt-2 h-1 w-1 shrink-0 rounded-full bg-fg/30"></span>
+                        <span>{point}</span>
+                        </li>
+                    ))}
+                    </ul>
+                </section>
+                )}
+
+                <!-- Writeups -->
+                {writeups && (
+                <section class="mt-12 space-y-8">
+                    {writeups.map((writeup) => (
+                    <div>
+                        <h2 class="text-xl">{writeup.title}</h2>
+                        <p class="mt-3 text-sm leading-relaxed text-fg/80">{writeup.entry}</p>
+                    </div>
+                    ))}
+                </section>
+                )}
+            </div>
+        </div>
+    </article>
+</Layout>
+
+<style>
+.content :global(h2) {
+    margin-top: 2.5rem;
+    font-size: 1.25rem;
+}
+
+.content :global(h2:first-child) {
+    margin-top: 0;
+}
+
+.content :global(p) {
+    margin-top: 1rem;
+    line-height: 1.75;
+    color: color-mix(in oklab, var(--color-fg) 80%, transparent);
+}
+
+.content :global(ul),
+.content :global(ol) {
+    margin-top: 1rem;
+    padding-left: 1.25rem;
+    color: color-mix(in oklab, var(--color-fg) 80%, transparent);
+}
+
+.content :global(ul) {
+    list-style: disc;
+}
+
+.content :global(ol) {
+    list-style: decimal;
+}
+
+.content :global(li + li) {
+    margin-top: 0.5rem;
+}
+
+.content :global(a) {
+    color: var(--color-accent);
+    text-underline-offset: 2px;
+}
+
+.content :global(code) {
+    border-radius: 0.25rem;
+    background: color-mix(in oklab, var(--color-fg) 6%, transparent);
+    padding: 0.15em 0.4em;
+    font-size: 0.85em;
+}
+
+.content :global(pre) {
+    margin-top: 1rem;
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    border: 1px solid color-mix(in oklab, var(--color-fg) 10%, transparent);
+    background: color-mix(in oklab, var(--color-fg) 4%, transparent);
+    padding: 1rem;
+    font-size: 0.8rem;
+    line-height: 1.6;
+}
+
+.content :global(pre code) {
+    background: none;
+    padding: 0;
+}
+
+.content :global(blockquote) {
+    margin-top: 1rem;
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1rem;
+    color: color-mix(in oklab, var(--color-fg) 60%, transparent);
+}
+</style>

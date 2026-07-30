@@ -1,0 +1,86 @@
+---
+import '@fontsource-variable/fraunces';
+import '@fontsource-variable/geist';
+import '@fontsource-variable/jetbrains-mono';
+import '../styles/global.css';
+import { Icon } from 'astro-icon/components';
+import { SOCIALS } from '../consts';
+import ThemeToggle from '../components/ThemeToggle.astro';
+
+interface Props {
+title: string;
+description?: string;
+}
+
+const { title, description = 'Hayden Schultz — software and security engineering.' } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en" class="dark">
+<head>
+    <script is:inline>
+    const stored = localStorage.getItem('theme');
+    const isDark = stored
+        ? stored === 'dark'
+        : matchMedia('(prefers-color-scheme: dark)').matches;
+    document.documentElement.classList.toggle('dark', isDark);
+    document.documentElement.style.colorScheme = isDark ? 'dark' : 'light';
+    </script>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+</head>
+    <body>
+        <header class="sticky top-0 z-10">
+
+            <!-- Gradient and Blur navbar backdrop -->
+            <div
+                class="py-15 pointer-events-none absolute inset-0 -z-10 backdrop-blur-sm
+                    bg-gradient-to-b from-bg via-bg/90 to-transparent
+                    [mask-image:linear-gradient(to_bottom,black_55%,transparent)]
+                    [-webkit-mask-image:linear-gradient(to_bottom,black_55%,transparent)]"
+            ></div>
+
+            <!-- Header/Navbar content -->
+            <div class="mx-auto flex max-w-5xl items-center justify-between px-6 pt-10 pb-8">
+
+                <!-- Site logo/home link -->
+                <a href="/" class="font-mono text-sm tracking-tight hover:text-accent">
+                    haydenschultz<span class="text-accent">.dev</span>
+                </a>
+
+                <!-- Socials and light/dark mode toggle -->
+                <nav class="flex items-center gap-5">
+                    {SOCIALS.map(({ name, href, icon }) => (
+                    <a
+                        href={href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        aria-label={name}
+                        class="text-fg/50 transition-colors hover:text-accent"
+                    >
+                        <Icon name={icon} class="h-[18px] w-[18px]" />
+                    </a>
+                    ))}
+                    <span class="h-4 w-px bg-fg/15" />
+                    <ThemeToggle />
+                </nav>
+                
+            </div>
+        </header>
+
+        <slot />
+
+        <!-- Copyright footer -->
+        <footer class="mx-auto max-w-5xl px-6 py-10">
+            <p class="font-mono text-xs text-fg/40">
+            © {new Date().getFullYear()} Hayden Schultz
+            </p>
+        </footer>
+
+    </body>
+    
+</html>
