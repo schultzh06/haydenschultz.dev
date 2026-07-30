@@ -35,6 +35,8 @@ const { title, description = 'Hayden Schultz — software and security engineeri
 </head>
     <body>
         <header class="sticky top-0 z-10">
+
+            <!-- Gradient and Blur navbar backdrop -->
             <div
                 class="py-15 pointer-events-none absolute inset-0 -z-10 backdrop-blur-sm
                     bg-gradient-to-b from-bg via-bg/90 to-transparent
@@ -42,10 +44,15 @@ const { title, description = 'Hayden Schultz — software and security engineeri
                     [-webkit-mask-image:linear-gradient(to_bottom,black_55%,transparent)]"
             ></div>
 
+            <!-- Header/Navbar content -->
             <div class="mx-auto flex max-w-5xl items-center justify-between px-6 pt-10 pb-8">
+
+                <!-- Site logo/home link -->
                 <a href="/" class="font-mono text-sm tracking-tight hover:text-accent">
                     haydenschultz<span class="text-accent">.dev</span>
                 </a>
+
+                <!-- Socials and light/dark mode toggle -->
                 <nav class="flex items-center gap-5">
                     {SOCIALS.map(({ name, href, icon }) => (
                     <a
@@ -61,8 +68,19 @@ const { title, description = 'Hayden Schultz — software and security engineeri
                     <span class="h-4 w-px bg-fg/15" />
                     <ThemeToggle />
                 </nav>
+                
             </div>
         </header>
+
         <slot />
+
+        <!-- Copyright footer -->
+        <footer class="mx-auto max-w-5xl px-6 py-10">
+            <p class="font-mono text-xs text-fg/40">
+            © {new Date().getFullYear()} Hayden Schultz
+            </p>
+        </footer>
+
     </body>
+    
 </html>
