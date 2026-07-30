@@ -1,0 +1,123 @@
+---
+import { Icon } from 'astro-icon/components';
+import { STACKROWS, type StackItem } from '../consts.ts';
+
+interface Props {
+rows?: StackItem[][];
+}
+
+const { rows = STACKROWS } = Astro.props;
+const durations = ['52s', '64s'];
+---
+
+<section aria-label="Tech stack" class="marquee-wrap">
+{rows.map((row, i) => (
+    <div
+    class="marquee"
+    style={`--duration: ${durations[i % durations.length]}; --dir: ${i % 2 ? 'reverse' : 'normal'};`}
+    >
+    {[0, 1].map((copy) => (
+        <ul class="track" aria-hidden={copy === 1 ? 'true' : undefined}>
+        {row.map((item) => (
+            <li class="chip">
+                <div class="flex flex-row gap-2 items-center justify-center">
+                    <Icon name={item.icon} class="chip-icon" aria-hidden="true" />
+                    <span>{item.name}</span>
+                </div>
+            
+            </li>
+        ))}
+        </ul>
+    ))}
+    </div>
+))}
+</section>
+
+<style>
+.marquee-wrap {
+    --gap: 0.7rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+}
+
+.marquee {
+    display: flex;
+    gap: var(--gap);
+    overflow: hidden;
+    mask-image: linear-gradient(
+    to right,
+    transparent,
+    #000 5rem,
+    #000 calc(100% - 5rem),
+    transparent
+    );
+}
+
+.track {
+    display: flex;
+    flex-shrink: 0;
+    gap: var(--gap);
+    min-width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    animation: scroll var(--duration) linear infinite;
+    animation-direction: var(--dir);
+}
+
+.marquee:hover .track {
+    animation-play-state: paused;
+}
+
+@keyframes scroll {
+    to {
+    transform: translateX(calc(-100% - var(--gap)));
+    }
+}
+
+.chip {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.45rem 0.9rem 0.45rem 0.75rem;
+    border-bottom: 2px solid color-mix(in oklab, var(--color-accent) 30%, transparent);
+    color: color-mix(in oklab, var(--color-fg) 55%, transparent);
+    transition: color 150ms ease, border-color 150ms ease;
+}
+
+.chip-icon {
+    width: 0.95em;
+    height: 0.95em;
+    flex-shrink: 0;
+    opacity: 0.85;
+}
+
+.chip:hover {
+    color: var(--color-accent);
+    border-color: color-mix(in oklab, var(--color-accent) 45%, transparent);
+}
+
+.chip:hover .chip-icon {
+    opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .marquee {
+    overflow-x: auto;
+    mask-image: none;
+    }
+    .track {
+    animation: none;
+    }
+    .track[aria-hidden='true'] {
+    display: none;
+    }
+}
+</style>
