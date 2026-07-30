@@ -26,7 +26,7 @@ Depth:
 
 ## Tech Stack
 **Technologies:** `PostgreSQL` `Express.js` `React` `Node.js` `Supabase` `Auth0` `shadcn/ui` `Prisma ORM` `TailwindCSS` `OpenAI API` `TypeScript/TSX` `Vite`\
-**Workflow:** `Agile Methodology` `Daily Standup/Scrum` `UML` `ERD` 
+**Workflow:** `Agile Methodology` `Daily Standup/Scrum` `UML` `ERD` `Jira`
 
 ## Media
 TODO -- essentially an informative screenshot of a few essential features, as well as one of the landing page, with captions
@@ -60,4 +60,53 @@ TODO -- essentially an informative screenshot of a few essential features, as we
 TODO: Asciinema cast
 
 ## Learn More
-[**subpixel Github Repository**](https://github.com/schultzh06/subpixel) — Repository containing the source code and release points of subpixel.
+[**subpixel Github Repository**](https://github.com/schultzh06/subpixel) — Repository containing the source code and release points of subpixel. 
+
+# Music Audio Visualizer
+
+**Summary:** TODO — real-time 3D audio visualizer driven by FFT analysis, with Spotify integration for track metadata and synced lyrics.
+
+**Why I Built This:** TODO — solo portfolio project; what drew you to WebGL/audio DSP.
+
+* TODO — real-time FFT via Web Audio API `AnalyserNode`, frequency-bin mapping to geometry
+* TODO — Three.js / react-three-fiber scene, shader work, what runs per-frame
+* TODO — Spotify OAuth PKCE flow, LRCLIB synced lyrics
+
+**Limitations:** TODO — Spotify dev-mode user allowlist; browser autoplay/mic permission constraints; what happens with no track metadata.
+
+## Tech Stack
+`TypeScript` `React` `Three.js` `react-three-fiber` `Web Audio API` `Vite` `TODO`\
+`Spotify Web API` `OAuth 2.0 PKCE` `LRCLIB`
+
+## Media
+TODO — 3–4 screenshots + short screen recording (static images undersell this one)
+
+## Demo
+TODO — demos.haydenschultz.dev/visualizer (planned)
+
+## Learn More
+[**music-visualizer GitHub Repository**](https://github.com/schultzh06/music-visualizer) — TODO
+
+# Detection Engineering Homelab
+
+**Summary:** TODO — Proxmox homelab used to build and tune Wazuh detection rules against simulated adversary techniques.
+
+**Why I Built This:** TODO — wanting the attack/detect/tune loop hands-on rather than theoretical.
+
+* TODO — Proxmox host, LXC containers, network segmentation
+* TODO — Wazuh deployment, agent coverage, log sources
+* TODO — Atomic Red Team techniques mapped to MITRE ATT&CK; rules written, false positives tuned out
+
+**Limitations:** TODO — scope of what a single-host lab can realistically simulate.
+
+## Tech Stack
+`Proxmox VE` `LXC` `Wazuh` `Atomic Red Team` `MITRE ATT&CK` `nmap` `TODO`
+
+## Media
+TODO — Wazuh alert views, ATT&CK coverage map, before/after tuning. **Redact hostnames, internal IPs, topology.**
+
+## Learn More
+[**homelab-buildlog GitHub Repository**](https://github.com/schultzh06/homelab-buildlog) — TODO
+
+---
+**OPEN QUESTION:** project entry, or blog post series with a thin card pointing at the writeups? Decide before writing the schema.
