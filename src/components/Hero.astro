@@ -1,0 +1,211 @@
+---
+---
+
+<!-- Hero -->
+<section class="hero-grid pb-8 pt-6 lg:pt-16">
+	<!-- Terminal command line -->
+	<p class="whoami-label hero-area-whoami font-mono tracking-[0.15em] text-md! uppercase text-accent">
+		<span>~# <span class="sr-only">whoami</span></span>
+		<span class="whoami-text" aria-hidden="true"></span><span class="type-caret" aria-hidden="true"></span>
+	</p>
+
+	<!-- Main hero -->
+	<div class="hero-area-hero">
+		<h1 class="hero-name text-6xl leading-[1.05] sm:text-7xl">
+			<span class="w"><span class="i">Hayden Schultz</span></span>
+			</h1>
+
+			<p class="mt-3 hero-fade font-mono text-accent uppercase" style="--d: 420ms">
+			available for summer 2027 internships
+			</p>
+
+			<p class="hero-fade mt-3 max-w-2xl leading-relaxed text-fg/70 mb-1" style="--d: 540ms">
+			Computer Science and Cybersecurity at Worcester Polytechnic Institute, class of 2028. Looking for a software or security internship for <b>Summer 2027</b>.
+			</p>
+
+			<a href="mailto:you@haydenschultz.dev" style="--d: 660ms" class="hero-fade font-mono text-xs underline underline-offset-4 hover:text-accent">CONTACT ME ↗</a>
+
+			<style>
+			.hero-grid {
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-template-areas:
+					"whoami"
+					"hero"
+					"dl";
+				row-gap: 1rem;
+			}
+
+			.hero-area-whoami {
+				grid-area: whoami;
+			}
+
+			.hero-area-hero {
+				grid-area: hero;
+			}
+
+			.hero-area-dl {
+				grid-area: dl;
+			}
+
+			@media (min-width: 64rem) {
+				.hero-grid {
+					grid-template-columns: 15rem minmax(0, 40rem);
+					grid-template-areas:
+						"whoami hero"
+						"dl hero";
+					column-gap: 5rem;
+					row-gap: 0;
+				}
+			}
+
+			.hero-name .w {
+				display: inline-block;
+				padding-bottom: 0.16em;
+				margin-bottom: -0.16em;
+				clip-path: inset(0 100% 0 0);
+			}
+
+			.hero-name .i {
+				display: inline-block;
+			}
+
+			.hero-fade {
+				opacity: 0;
+				transform: translateY(0.4rem);
+			}
+
+			.whoami-label {
+				display: inline-flex;
+				align-items: baseline;
+			}
+
+			.type-caret {
+				display: inline-block;
+				width: 0.5em;
+				margin-left: 0.05em;
+				opacity: 0;
+			}
+
+			.type-caret::after {
+				content: '_';
+			}
+
+			.whoami-label.is-typing .type-caret {
+				opacity: 1;
+				animation: caret-blink 800ms steps(1) infinite;
+			}
+
+			@keyframes caret-blink {
+				50% { opacity: 0; }
+			}
+
+			:global(.fonts-ready) .hero-name .w {
+				animation: wipe 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+			}
+
+			:global(.fonts-ready) .hero-name .i {
+				animation: rise 900ms cubic-bezier(0.22, 1, 0.36, 1) both;
+			}
+
+			:global(.fonts-ready) .hero-name .w:nth-of-type(2),
+			:global(.fonts-ready) .hero-name .w:nth-of-type(2) .i {
+				animation-delay: 200ms;
+			}
+
+			:global(.fonts-ready) .hero-fade {
+				animation: fade 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+				animation-delay: var(--d, 0ms);
+			}
+
+			@keyframes wipe {
+				from { clip-path: inset(0 100% 0 0); }
+				to   { clip-path: inset(0 0 0 0); }
+			}
+
+			@keyframes rise {
+				from { transform: translateY(0.14em); }
+				to   { transform: translateY(0); }
+			}
+
+			@keyframes fade {
+				from { opacity: 0; transform: translateY(0.4rem); }
+				to   { opacity: 1; transform: translateY(0); }
+			}
+
+			/* Reduced motion: accessibility */
+			@media (prefers-reduced-motion: reduce) {
+				.hero-name .w,
+				.hero-name .i,
+				.hero-fade,
+				:global(.fonts-ready) .hero-name .w,
+				:global(.fonts-ready) .hero-name .i,
+				:global(.fonts-ready) .hero-fade {
+				animation: none;
+				opacity: 1;
+				transform: none;
+				clip-path: none;
+				}
+				.type-caret {
+				display: none;
+				}
+			}
+			</style>
+
+			<script>
+			document.addEventListener('astro:page-load', () => {
+				
+				// Listen for the page to load (including client transitions since I use the astro transitions)
+				// Small delay, typewriter happens, then the rest comes in 
+
+				const html = document.documentElement;
+				html.classList.remove('fonts-ready');
+
+				const label = document.querySelector('.whoami-label');
+				const textEl = label?.querySelector('.whoami-text');
+				const fullText = ' whoami';
+				const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+				document.fonts.ready.then(() => {
+					if (!textEl || reduceMotion) {
+						if (textEl) textEl.textContent = fullText;
+						html.classList.add('fonts-ready');
+						return;
+					}
+
+					textEl.textContent = '';
+					label?.classList.add('is-typing');
+
+					let i = 0;
+					const type = () => {
+						i++;
+						textEl.textContent = fullText.slice(0, i);
+						if (i < fullText.length) {
+							setTimeout(type, 45);
+						} else {
+							label?.classList.remove('is-typing');
+							setTimeout(() => html.classList.add('fonts-ready'), 200);
+						}
+					};
+					setTimeout(type, 150);
+				});
+			});
+			</script>
+	</div>
+
+	<!-- Info -->
+	<dl class="hero-area-dl font-mono lg:mt-6 space-y-6 text-xs">
+		<div class="hero-fade" style="--d: 600ms">
+			<dt class="tracking-[0.12em] text-fg/40">location</dt>
+			<dd class="mt-1 text-fg/70">Worcester, MA</dd>
+		</div>
+		<div class="hero-fade" style="--d: 700ms">
+			<dt class="tracking-[0.12em] text-fg/40">focus</dt>
+			<dd class="mt-1 text-fg/70">SWE · AppSec · Systems</dd>
+		</div>
+		<div class="hero-fade" style="--d: 800ms">
+			<dt class="tracking-[0.12em] text-fg/40">status</dt>
+			<dd class="mt-1 text-accent">Open — Summer 2027</dd>
+		</div>
+	</dl>
+</section>

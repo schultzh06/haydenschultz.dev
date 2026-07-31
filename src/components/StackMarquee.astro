@@ -16,19 +16,22 @@ const durations = ['52s', '64s'];
     class="marquee"
     style={`--duration: ${durations[i % durations.length]}; --dir: ${i % 2 ? 'reverse' : 'normal'};`}
     >
-    {[0, 1].map((copy) => (
-        <ul class="track" aria-hidden={copy === 1 ? 'true' : undefined}>
-        {row.map((item) => (
-            <li class="chip">
-                <div class="flex flex-row gap-2 items-center justify-center">
-                    <Icon name={item.icon} class="chip-icon" aria-hidden="true" />
-                    <span>{item.name}</span>
-                </div>
-            
-            </li>
-        ))}
-        </ul>
-    ))}
+    {(() => {
+        const delays = row.map(() => Math.round(Math.random() * 400));
+        return [0, 1].map((copy) => (
+            <ul class="track" aria-hidden={copy === 1 ? 'true' : undefined}>
+            {row.map((item, idx) => (
+                <li class="chip" style={`--enter-delay: ${delays[idx]}ms`}>
+                    <div class="flex flex-row gap-2 items-center justify-center">
+                        <Icon name={item.icon} class="chip-icon" aria-hidden="true" />
+                        <span>{item.name}</span>
+                    </div>
+
+                </li>
+            ))}
+            </ul>
+        ));
+    })()}
     </div>
 ))}
 </section>
@@ -90,6 +93,8 @@ const durations = ['52s', '64s'];
     border-bottom: 2px solid color-mix(in oklab, var(--color-accent) 30%, transparent);
     color: color-mix(in oklab, var(--color-fg) 55%, transparent);
     transition: color 150ms ease, border-color 150ms ease;
+    opacity: 0;
+    transform: translateY(0.35rem);
 }
 
 .chip-icon {
@@ -108,6 +113,16 @@ const durations = ['52s', '64s'];
     opacity: 1;
 }
 
+:global(.fonts-ready) .chip {
+    animation: chip-in 380ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation-delay: var(--enter-delay, 0ms);
+}
+
+@keyframes chip-in {
+    from { opacity: 0; transform: translateY(0.35rem); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .marquee {
     overflow-x: auto;
@@ -118,6 +133,12 @@ const durations = ['52s', '64s'];
     }
     .track[aria-hidden='true'] {
     display: none;
+    }
+    .chip,
+    :global(.fonts-ready) .chip {
+    animation: none;
+    opacity: 1;
+    transform: none;
     }
 }
 </style>

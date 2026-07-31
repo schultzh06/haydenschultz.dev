@@ -18,7 +18,7 @@ project.data;
 const { Content } = await render(project);
 ---
 
-<Layout title={title} description={summary}>
+<Layout title={title + " - Hayden Schultz"} description={summary}>
     <article class="mx-auto max-w-5xl px-6 pb-24 pt-8">
         <div class="grid gap-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
 
@@ -86,8 +86,8 @@ const { Content } = await render(project);
 
                 <!-- Title and Hook (header) -->
                 <header class="mt-8">
-                    <h1 class="mt-2 text-4xl sm:text-5xl">{title}</h1>
-                    <p class="mt-4 text-lg leading-relaxed text-fg/70">{hook}</p>
+                    <h1 transition:name={`title-${project.id}`} class="mt-2 text-4xl sm:text-5xl">{title}</h1>
+                    <p transition:name={`hook-${project.id}`} class="mt-4 text-lg leading-relaxed text-fg/70">{hook}</p>
                 </header>
 
                 <!-- Brief -->
