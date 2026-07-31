@@ -97,13 +97,6 @@ const { Content } = await render(project);
 
                 <div class="mt-12 h-px w-full bg-fg/15" />
 
-                <!-- Content -->
-                <div class="content mt-12">
-                    <Content />
-                </div>
-
-                <div class="mt-12 h-px w-full bg-fg/15" />
-
                 <!-- Depth bullets -->
                 {depth && (
                 <section class="mt-12">
@@ -145,6 +138,13 @@ const { Content } = await render(project);
                     ))}
                 </section>
                 )}
+
+                <div class="mt-12 h-px w-full bg-fg/15" />
+
+                <!-- Content -->
+                <div class="content mt-12">
+                    <Content />
+                </div>
             </div>
         </div>
     </article>

@@ -6,6 +6,7 @@ import '../styles/global.css';
 import { Icon } from 'astro-icon/components';
 import { SOCIALS } from '../consts';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import { execSync } from 'node:child_process';
 
 interface Props {
 title: string;
@@ -13,6 +14,7 @@ description?: string;
 }
 
 const { title, description = 'Hayden Schultz — software and security engineering.' } = Astro.props;
+const lastCommitDate = execSync('git log -1 --format=%cd --date=short').toString().trim();
 ---
 
 <!doctype html>
@@ -78,9 +80,25 @@ const { title, description = 'Hayden Schultz — software and security engineeri
 
         <!-- Copyright footer -->
         <footer class="mx-auto max-w-5xl px-6 py-10">
-            <p class="font-mono text-xs text-fg/40">
-            © {new Date().getFullYear()} Hayden Schultz
-            </p>
+            <div class="flex flex-row justify-between items-center">
+                <p class="font-mono text-xs text-fg/40">
+                © {new Date().getFullYear()} Hayden Schultz
+                </p>
+                <div class="flex flex-row items-center gap-3">
+                    <a href={"https://github.com/schultzh06/haydenschultz.dev"} target="_blank" rel="noopener noreferrer"
+                    class="font-mono text-xs underline underline-offset-4 text-fg/40 hover:text-accent">
+                        <span class="flex flex-row items-center gap-2">
+                            <Icon name={"simple-icons:github"} class="h-[18px] w-[18px]"/>
+                            Website Repo ↗
+                        </span>
+                    </a>
+                    <span class="text-fg/40">·</span>
+                    <p class="font-mono text-xs text-fg/40">
+                        Last updated {lastCommitDate}
+                    </p>
+                </div>
+            </div>
+            
         </footer>
 
     </body>
