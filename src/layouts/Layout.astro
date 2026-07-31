@@ -7,10 +7,11 @@ import { Icon } from 'astro-icon/components';
 import { SOCIALS } from '../consts';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import { execSync } from 'node:child_process';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
-title: string;
-description?: string;
+    title: string;
+    description?: string;
 }
 
 const { title, description = 'Hayden Schultz — software and security engineering.' } = Astro.props;
@@ -20,6 +21,7 @@ const lastCommitDate = execSync('git log -1 --format=%cd --date=short').toString
 <!doctype html>
 <html lang="en" class="dark">
 <head>
+    <ClientRouter />
     <script is:inline>
     const stored = localStorage.getItem('theme');
     const isDark = stored

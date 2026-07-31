@@ -86,8 +86,8 @@ const { Content } = await render(project);
 
                 <!-- Title and Hook (header) -->
                 <header class="mt-8">
-                    <h1 class="mt-2 text-4xl sm:text-5xl">{title}</h1>
-                    <p class="mt-4 text-lg leading-relaxed text-fg/70">{hook}</p>
+                    <h1 transition:name={`title-${project.id}`} class="mt-2 text-4xl sm:text-5xl">{title}</h1>
+                    <p transition:name={`hook-${project.id}`} class="mt-4 text-lg leading-relaxed text-fg/70">{hook}</p>
                 </header>
 
                 <!-- Brief -->
