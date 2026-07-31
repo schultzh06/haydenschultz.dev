@@ -2,33 +2,15 @@
 ---
 
 <!-- Hero -->
-<section class="grid gap-4 pb-8 pt-16 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
-	<div class="order-2 font-mono lg:order-none">
-		<!-- Terminal command line -->
-		<p class="whoami-label tracking-[0.15em] text-md! uppercase text-accent">
-			<span>~# <span class="sr-only">whoami</span></span>
-			<span class="whoami-text" aria-hidden="true"></span><span class="type-caret" aria-hidden="true"></span>
-		</p>
-
-		<!-- Info -->
-		<dl class="mt-6 space-y-6 text-xs">
-			<div class="hero-fade" style="--d: 600ms">
-				<dt class="tracking-[0.12em] text-fg/40">location</dt>
-				<dd class="mt-1 text-fg/70">Worcester, MA</dd>
-			</div>
-			<div class="hero-fade" style="--d: 700ms">
-				<dt class="tracking-[0.12em] text-fg/40">focus</dt>
-				<dd class="mt-1 text-fg/70">SWE · AppSec · Systems</dd>
-			</div>
-			<div class="hero-fade" style="--d: 800ms">
-				<dt class="tracking-[0.12em] text-fg/40">status</dt>
-				<dd class="mt-1 text-accent">Open — Summer 2027</dd>
-			</div>
-		</dl>
-	</div>
+<section class="hero-grid pb-8 pt-16">
+	<!-- Terminal command line -->
+	<p class="whoami-label hero-area-whoami font-mono tracking-[0.15em] text-md! uppercase text-accent">
+		<span>~# <span class="sr-only">whoami</span></span>
+		<span class="whoami-text" aria-hidden="true"></span><span class="type-caret" aria-hidden="true"></span>
+	</p>
 
 	<!-- Main hero -->
-	<div class="order-1 lg:order-none">
+	<div class="hero-area-hero">
 		<h1 class="hero-name text-6xl leading-[1.05] sm:text-7xl">
 			<span class="w"><span class="i">Hayden Schultz</span></span>
 			</h1>
@@ -42,6 +24,39 @@
 			</p>
 
 			<style>
+			.hero-grid {
+				display: grid;
+				grid-template-columns: 1fr;
+				grid-template-areas:
+					"whoami"
+					"hero"
+					"dl";
+				row-gap: 1rem;
+			}
+
+			.hero-area-whoami {
+				grid-area: whoami;
+			}
+
+			.hero-area-hero {
+				grid-area: hero;
+			}
+
+			.hero-area-dl {
+				grid-area: dl;
+			}
+
+			@media (min-width: 64rem) {
+				.hero-grid {
+					grid-template-columns: 15rem minmax(0, 40rem);
+					grid-template-areas:
+						"whoami hero"
+						"dl hero";
+					column-gap: 5rem;
+					row-gap: 0;
+				}
+			}
+
 			.hero-name .w {
 				display: inline-block;
 				padding-bottom: 0.16em;
@@ -175,4 +190,20 @@
 			});
 			</script>
 	</div>
+
+	<!-- Info -->
+	<dl class="hero-area-dl font-mono mt-6 space-y-6 text-xs">
+		<div class="hero-fade" style="--d: 600ms">
+			<dt class="tracking-[0.12em] text-fg/40">location</dt>
+			<dd class="mt-1 text-fg/70">Worcester, MA</dd>
+		</div>
+		<div class="hero-fade" style="--d: 700ms">
+			<dt class="tracking-[0.12em] text-fg/40">focus</dt>
+			<dd class="mt-1 text-fg/70">SWE · AppSec · Systems</dd>
+		</div>
+		<div class="hero-fade" style="--d: 800ms">
+			<dt class="tracking-[0.12em] text-fg/40">status</dt>
+			<dd class="mt-1 text-accent">Open — Summer 2027</dd>
+		</div>
+	</dl>
 </section>
