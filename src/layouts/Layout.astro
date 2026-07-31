@@ -80,11 +80,11 @@ const lastCommitDate = execSync('git log -1 --format=%cd --date=short').toString
 
         <!-- Copyright footer -->
         <footer class="mx-auto max-w-5xl px-6 py-10">
-            <div class="flex flex-row justify-between items-center">
+            <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <p class="font-mono text-xs text-fg/40">
                 © {new Date().getFullYear()} Hayden Schultz
                 </p>
-                <div class="flex flex-row items-center gap-3">
+                <div class="flex flex-wrap items-center gap-3">
                     <a href={"https://github.com/schultzh06/haydenschultz.dev"} target="_blank" rel="noopener noreferrer"
                     class="font-mono text-xs underline underline-offset-4 text-fg/40 hover:text-accent">
                         <span class="flex flex-row items-center gap-2">
@@ -98,7 +98,7 @@ const lastCommitDate = execSync('git log -1 --format=%cd --date=short').toString
                     </p>
                 </div>
             </div>
-            
+
         </footer>
 
     </body>
