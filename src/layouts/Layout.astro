@@ -45,8 +45,8 @@ const lastCommitDate = execSync('git log -1 --format=%cd --date=short').toString
             <!-- Gradient and Blur navbar backdrop -->
             <div
                 class="py-15 pointer-events-none absolute inset-0 -z-10 backdrop-blur-sm
-                    bg-gradient-to-b from-bg via-bg/90 to-transparent
-                    [mask-image:linear-gradient(to_bottom,black_55%,transparent)]
+                    bg-linear-to-b from-bg via-bg/90 to-transparent
+                    mask-[linear-gradient(to_bottom,black_55%,transparent)]
                     [-webkit-mask-image:linear-gradient(to_bottom,black_55%,transparent)]"
             ></div>
 
@@ -68,7 +68,7 @@ const lastCommitDate = execSync('git log -1 --format=%cd --date=short').toString
                         aria-label={name}
                         class="text-fg/50 transition-colors hover:text-accent"
                     >
-                        <Icon name={icon} class="h-[18px] w-[18px]" />
+                        <Icon name={icon} class="h-4.5 w-4.5" />
                     </a>
                     ))}
                     <span class="h-4 w-px bg-fg/15" />
@@ -90,7 +90,7 @@ const lastCommitDate = execSync('git log -1 --format=%cd --date=short').toString
                     <a href={"https://github.com/schultzh06/haydenschultz.dev"} target="_blank" rel="noopener noreferrer"
                     class="font-mono text-xs underline underline-offset-4 text-fg/40 hover:text-accent">
                         <span class="flex flex-row items-center gap-2">
-                            <Icon name={"simple-icons:github"} class="h-[18px] w-[18px]"/>
+                            <Icon name={"simple-icons:github"} class="h-4.5 w-4.5"/>
                             Website Repo ↗
                         </span>
                     </a>

@@ -17,7 +17,7 @@ const durations = ['52s', '64s'];
     style={`--duration: ${durations[i % durations.length]}; --dir: ${i % 2 ? 'reverse' : 'normal'};`}
     >
     {(() => {
-        const delays = row.map(() => Math.round(Math.random() * 400 + 700));
+        const delays = row.map(() => Math.round(Math.random() * 400 + 800));
         return [0, 1].map((copy) => (
             <ul class="track" aria-hidden={copy === 1 ? 'true' : undefined}>
             {row.map((item, idx) => (
