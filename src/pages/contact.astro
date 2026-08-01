@@ -1,0 +1,142 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { Icon } from 'astro-icon/components'
+---
+
+<Layout title='Contact & Resume - Hayden Schultz' description='Resume and Contact info for Hayden Schultz.'>
+    <article class="mx-auto max-w-5xl px-6 pb-24 pt-8">
+        <div class="grid gap-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+
+            <!-- Contact Sidebar -->
+            <aside class="min-w-0 lg:sticky lg:top-25 lg:h-fit">
+                <a
+                href="/"
+                class="font-mono text-sm text-fg/50 transition-colors hover:text-accent"
+                >
+                    &larr; Back
+                </a>
+                <p transition:name="hero-contact" class="mt-4 uppercase tracking-[0.15e] font-mono text-accent text-md">Contact Me</p>
+
+                <!-- Contact List -->
+                <dl class="space-y-6 font-mono text-xs mt-4">
+                    <!-- Email -->
+                    <div>
+                        <dt class="uppercase tracking-[0.15em] text-fg/40">Email</dt>
+                        <dd class="mt-2">
+                            <a class="underline underline-offset-4 hover:text-accent" href='mailto:hrschultz@wpi.edu'>
+                                <span class="flex flex-row items-center gap-2">
+                                    <Icon name={"lucide:mail"} class="h-4.5 w-4.5"/> 
+                                    hrschultz@wpi.edu ↗
+                                </span>
+                            </a>
+                        </dd>
+                    </div>
+                    <!-- Github Profile -->
+                    <div>
+                        <dt class="uppercase tracking-[0.15em] text-fg/40">Github</dt>
+                        <dd class="mt-2">
+                            <a href={'https://github.com/schultzh06'} target="_blank" rel="noopener noreferrer"
+                            class="font-mono text-xs underline underline-offset-4 hover:text-accent">
+                                <span class="flex flex-row items-center gap-2">
+                                    <Icon name={"simple-icons:github"} class="h-4.5 w-4.5"/> 
+                                    My Github ↗
+                                </span>
+                            </a>
+                        </dd>
+                    </div>
+                    <!-- LinkedIn -->
+                     <div>
+                        <dt class="uppercase tracking-[0.15em] text-fg/40">LinkedIn</dt>
+                        <dd class="mt-2">
+                            <a href={'https://linkedin.com/in/schultzh06'} target="_blank" rel="noopener noreferrer"
+                            class="font-mono text-xs underline underline-offset-4 hover:text-accent">
+                                <span class="flex flex-row items-center gap-2">
+                                    <Icon name={"simple-icons:linkedin"} class="h-4.5 w-4.5"/> 
+                                    My LinkedIn ↗
+                                </span>
+                            </a>
+                        </dd>
+                    </div>
+                </dl>
+
+                <!-- Additional Info -->
+                <dl class="space-y-4 font-mono text-xs mt-6">
+                    <div>
+                        <dt class="tracking-[0.15em] text-accent">location</dt>
+                        <dd class="mt-2"> 
+                            <span class="flex flex-row gap-2 items-center"> <Icon name="lucide:graduation-cap" class="h-4.5 w-4.5" /> WOR, MA · EST</span>
+                            <span class="flex flex-row gap-2 items-center"> <Icon name="lucide:home" class="h-4 w-4 ml-px" /> ROC, NY · EST</span>
+                            <span class="flex flex-row gap-2 items-center"> <Icon name="lucide:globe" class="h-4.5 w-4.5" /><i>Flexible</i></span>
+                        </dd>
+                    </div>
+                    <div>
+                        <dt class="tracking-[0.15em] text-accent">status</dt>
+                        <dd class="mt-2">
+                            <span class="text-green-500">●</span> Open · Summer 2027
+                        </dd>
+                    </div>
+                </dl>
+
+            </aside>
+
+            <!-- Resume PDF & Content -->
+            <div class="min-w-0">
+                <header class="lg:mt-8 mt-2">
+                    <h1 class="mt-2 text-4xl sm:text-5xl">Resume</h1>
+                    <p class="mt-4 text-lg leading-relaxed text-fg/70">Resume for Hayden Schultz · Updated: 08/01/2026</p>
+                </header>
+
+                <!-- Download and view -->
+                <div class="mt-4 flex items-center gap-4">
+                    <a
+                        href="/resume-placeholder.pdf"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="font-mono text-xs underline underline-offset-4 hover:text-accent"
+                    >
+                        <span class="flex flex-row items-center gap-2">
+                            <Icon name={"lucide:file"} class="h-4.5 w-4.5" />
+                            View Full Resume in Browser
+                        </span>
+                    </a>
+                    <a
+                        href="/resume-placeholder.pdf"
+                        download
+                        class="font-mono text-xs underline underline-offset-4 hover:text-accent"
+                    >
+                        <span class="flex flex-row items-center gap-2">
+                            <Icon name={"lucide:download"} class="h-4.5 w-4.5" />
+                            Download PDF
+                        </span>
+                    </a>
+                </div>
+
+                <!-- Rendered preview -->
+                <a
+                    href="/resume-placeholder.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="group mt-6 block"
+                >
+                    <img
+                        src="/resume-preview.png"
+                        alt="Preview of Hayden Schultz's resume, page 1"
+                        class="w-full rounded-lg border-2 border-fg/60 transition-opacity group-hover:opacity-90"
+                    />
+                </a>
+
+                <h1 class="mt-6 text-2xl">About Me</h1>
+
+                <p class="mt-2 text-sm leading-relaxed text-fg/70">
+                    I'm a Computer Science student at WPI, based between Worcester, MA and Rochester, NY,
+                    with a focus on full-stack development, security, and systems work. I'm currently looking for
+                    Summer 2027 internship opportunities — feel free to reach out if you think I'd be a
+                    good fit for your team.
+                </p>
+
+                <p class="font-mono text-md text-accent uppercase mt-6">thanks for visiting!</p>
+            </div>
+
+        </div>
+    </article>
+</Layout>

@@ -5,11 +5,11 @@ import Layout from '../../layouts/Layout.astro';
 import { Icon } from 'astro-icon/components';
 
 export async function getStaticPaths() {
-const projects = await getCollection('projects', ({ data }) => !data.draft);
-return projects.map((project) => ({
-    params: { id: project.id },
-    props: { project },
-}));
+    const projects = await getCollection('projects', ({ data }) => !data.draft);
+    return projects.map((project) => ({
+        params: { id: project.id },
+        props: { project },
+    }));
 }
 
 const { project } = Astro.props;
@@ -62,7 +62,7 @@ const { Content } = await render(project);
                         <a href={links.repo} target="_blank" rel="noopener noreferrer"
                         class="font-mono text-xs underline underline-offset-4 hover:text-accent">
                             <span class="flex flex-row items-center gap-2">
-                                <Icon name={"simple-icons:github"} class="h-[18px] w-[18px]"/> 
+                                <Icon name={"simple-icons:github"} class="h-4.5 w-4.5"/> 
                                 Repo ↗
                             </span>
                         </a>
