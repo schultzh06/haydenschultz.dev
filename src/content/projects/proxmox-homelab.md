@@ -4,7 +4,6 @@ hook: "TODO"
 summary: "Proxmox homelab used to build and tune Wazuh detection rules against simulated adversary techniques."
 period: "2026"
 order: 4
-draft: true
 tech:
   - Proxmox VE
   - LXC

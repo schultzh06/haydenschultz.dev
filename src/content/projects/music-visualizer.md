@@ -4,7 +4,6 @@ hook: "TODO"
 summary: "Real-time 3D audio visualizer driven by FFT analysis, with Spotify integration for track metadata and synced lyrics."
 period: "2026"
 order: 3
-draft: true
 tech:
   - TypeScript
   - React

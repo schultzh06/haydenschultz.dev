@@ -4,65 +4,65 @@ import Layout from '../layouts/Layout.astro';
 import StackMarquee from '../components/StackMarquee.astro';
 import Hero from '../components/Hero.astro';
 
-const projects = (await getCollection('projects', ({ data }) => true))
+const projects = (await getCollection('projects', ({ data }) => !data.draft))
 .sort((a, b) => a.data.order - b.data.order);
 ---
 
 <Layout title="Portfolio - Hayden Schultz">
-<main class="mx-auto max-w-5xl px-6 pb-24">
+	<main class="mx-auto max-w-5xl px-6 pb-24">
 
-	<Hero />
+		<Hero />
 
-	<StackMarquee />
+		<StackMarquee />
 
-	<!-- Projects Header/Divider -->
-	<div class="mt-10 grid gap-4 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
-		<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/Projects</p>
-	</div>
+		<!-- Projects Header/Divider -->
+		<div class="mt-10 grid gap-4 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+			<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/Projects</p>
+		</div>
 
-	<section class="mt-4 border-t border-fg/10">
-		{projects.map((project) => (
-			<a
-			href={`/projects/${project.id}`}
-			class="group grid gap-4 border-b border-fg/10 py-10 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20"
-			>
-			<div class="font-mono text-xs">
-				<p class="uppercase tracking-[0.15em] text-accent/70">{project.data.period}</p>
-				<p class="mt-2 text-fg/50">{project.data.tech.slice(0, 4).join(' · ')} · <i>more...</i></p>
-			</div>
+		<section class="mt-4 border-t border-fg/10">
+			{projects.map((project) => (
+				<a
+				href={`/projects/${project.id}`}
+				class="group grid gap-4 border-b border-fg/10 py-10 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20"
+				>
+				<div class="font-mono text-xs">
+					<p class="uppercase tracking-[0.15em] text-accent/70">{project.data.period}</p>
+					<p class="mt-2 text-fg/50">{project.data.tech.slice(0, 4).join(' · ')} · <i>more...</i></p>
+				</div>
+
+				<div>
+					<h2 transition:name={`title-${project.id}`} class="text-2xl transition-colors group-hover:text-accent sm:text-3xl">
+						{project.data.title}
+						<span
+						class="mb-1 ml-2 inline-block font-mono align-middle text-[0.85em] text-accent transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none motion-reduce:transition-none"
+						aria-hidden="true"
+						>→</span>
+					</h2>
+					<p transition:name={`hook-${project.id}`} class="mt-3 leading-relaxed text-fg/70">{project.data.hook}</p>
+				</div>
+				</a>
+			))}
+			</section>
+
+		<section class="grid gap-4 pt-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+			<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/About</p>
 
 			<div>
-				<h2 transition:name={`title-${project.id}`} class="text-2xl transition-colors group-hover:text-accent sm:text-3xl">
-					{project.data.title}
-					<span
-					class="mb-1 ml-2 inline-block font-mono align-middle text-[0.85em] text-accent transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none motion-reduce:transition-none"
-					aria-hidden="true"
-					>→</span>
-				</h2>
-				<p transition:name={`hook-${project.id}`} class="mt-3 leading-relaxed text-fg/70">{project.data.hook}</p>
+				<p class="leading-relaxed text-fg/80">
+				CS student at WPI concentrating in cybersecurity, minoring in ECE.
+				Most of what I build lands somewhere between application security and
+				systems work. Currently looking for a Summer 2027 internship.
+				</p>
+
+				<div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs">
+					<a href="mailto:you@haydenschultz.dev" class="underline underline-offset-4 hover:text-accent">Email ↗</a>
+					<a href="https://github.com/schultzh06" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-accent">GitHub ↗</a>
+					<a href="https://linkedin.com/in/schultzh06" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-accent">LinkedIn ↗</a>
+					<a href="/resume.pdf" class="underline underline-offset-4 hover:text-accent">Resume ↗</a>
+				</div>
 			</div>
-			</a>
-		))}
 		</section>
 
-	<section class="grid gap-4 pt-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
-		<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/About</p>
-
-		<div>
-			<p class="leading-relaxed text-fg/80">
-			CS student at WPI concentrating in cybersecurity, minoring in ECE.
-			Most of what I build lands somewhere between application security and
-			systems work. Currently looking for a Summer 2027 internship.
-			</p>
-
-			<div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 font-mono text-xs">
-				<a href="mailto:you@haydenschultz.dev" class="underline underline-offset-4 hover:text-accent">Email ↗</a>
-				<a href="https://github.com/schultzh06" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-accent">GitHub ↗</a>
-				<a href="https://linkedin.com/in/schultzh06" target="_blank" rel="noopener noreferrer" class="underline underline-offset-4 hover:text-accent">LinkedIn ↗</a>
-				<a href="/resume.pdf" class="underline underline-offset-4 hover:text-accent">Resume ↗</a>
-			</div>
-		</div>
-	</section>
-
-</main>
+	</main>
 </Layout>
