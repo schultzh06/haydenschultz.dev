@@ -16,6 +16,8 @@ interface Props {
 
 const { title, description = 'Hayden Schultz — software and security engineering.' } = Astro.props;
 const lastCommitDate = execSync('git log -1 --format=%cd --date=short').toString().trim();
+const contact = SOCIALS.find(({ name }) => name === 'Contact');
+const socials = SOCIALS.filter(({ name }) => name !== 'Contact');
 ---
 
 <!doctype html>
@@ -60,7 +62,7 @@ const lastCommitDate = execSync('git log -1 --format=%cd --date=short').toString
 
                 <!-- Socials and light/dark mode toggle -->
                 <nav class="flex items-center gap-5">
-                    {SOCIALS.map(({ name, href, icon }) => (
+                    {socials.map(({ name, href, icon }) => (
                     <a
                         href={href}
                         target="_blank"
@@ -71,6 +73,17 @@ const lastCommitDate = execSync('git log -1 --format=%cd --date=short').toString
                         <Icon name={icon} class="h-4.5 w-4.5" />
                     </a>
                     ))}
+                    <span class="hidden h-4 w-px bg-fg/15 lg:block" />
+                    {contact && (
+                    <a
+                        href={contact.href}
+                        aria-label={contact.name}
+                        class="flex items-center gap-1.5 py-1.5 text-fg/50 hover:text-accent transition-colors"
+                    >
+                        <Icon name={contact.icon} class="h-4.5 w-4.5" />
+                        <span class="hidden font-mono text-xs sm:inline">Contact</span>
+                    </a>
+                    )}
                     <span class="h-4 w-px bg-fg/15" />
                     <ThemeToggle />
                 </nav>
