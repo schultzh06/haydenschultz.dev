@@ -5,9 +5,9 @@
   --font-body: "Geist Variable", system-ui, sans-serif;
   --font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
 
-  --color-bg: #FAF8F5;
-  --color-fg: #1C1917;
-  --color-accent: #B45309;
+  --color-bg: #eff1f5;
+  --color-fg: #4c4f69;
+  --color-accent: #fe640b;
 }
 
 @layer base {
@@ -30,9 +30,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 .dark {
-  --color-bg: #16150F;
-  --color-fg: #EDE9E2;
-  --color-accent: #D97706;
+  --color-bg: #1e1e2e;
+  --color-fg: #cdd6f4;
+  --color-accent: #fab387;
 }
 
 html.dark .astro-code,
