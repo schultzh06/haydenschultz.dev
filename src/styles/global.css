@@ -7,7 +7,7 @@
 
   --color-bg: #eff1f5;
   --color-fg: #4c4f69;
-  --color-accent: #8839ef;
+  --color-accent: #fe640b;
 }
 
 @layer base {
@@ -32,7 +32,7 @@
 .dark {
   --color-bg: #1e1e2e;
   --color-fg: #cdd6f4;
-  --color-accent: #cba6f7;
+  --color-accent: #fab387;
 }
 
 html.dark .astro-code,
