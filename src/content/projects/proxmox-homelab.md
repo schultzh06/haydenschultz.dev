@@ -4,7 +4,7 @@ hook: "Built a hardened Proxmox lab, attacked it myself, and proved the SIEM saw
 summary: "A self-hosted Proxmox homelab used to close the gap between prevention and detection — hardening the stack, then running live attacks against it and verifying they surface as correlated MITRE-mapped alerts."
 period: "2026"
 role: "Solo · architecture, build, threat modeling, and documentation"
-order: 4
+order: 3
 tech:
   - Proxmox VE
   - LXC (unprivileged)
