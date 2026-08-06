@@ -95,24 +95,65 @@ const socials = SOCIALS.filter(({ name }) => name !== 'Contact');
 
         <!-- Copyright footer -->
         <footer class="mx-auto max-w-5xl px-6 py-10">
+
             <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <p class="font-mono text-xs text-fg/40">
-                © {new Date().getFullYear()} Hayden Schultz
-                </p>
-                <div class="flex flex-wrap items-center gap-3">
-                    <a href={"https://github.com/schultzh06/haydenschultz.dev"} target="_blank" rel="noopener noreferrer"
-                    class="font-mono text-xs underline underline-offset-4 text-fg/40 hover:text-accent">
-                        <span class="flex flex-row items-center gap-2">
-                            <Icon name={"simple-icons:github"} class="h-4.5 w-4.5"/>
-                            Website Repo ↗
-                        </span>
-                    </a>
-                    <span class="text-fg/40">·</span>
+
+                <div class="flex flex-row sm:flex-col gap-4 ">
+
+                    <!-- Copyright -->
                     <p class="font-mono text-xs text-fg/40">
-                        Last updated {lastCommitDate}
+                    © {new Date().getFullYear()} Hayden Schultz
                     </p>
+
+                    <!-- License -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <p class="font-mono text-xs text-fg/40">
+                            MIT Licensed
+                        </p>
+                    </div>
+
                 </div>
+
+                <div class="flex flex-col gap-4 items-end">
+                    
+                    <!-- Repo -->
+                    <div class="flex flex-wrap items-center gap-3">
+                        <a href={"https://github.com/schultzh06/haydenschultz.dev"} target="_blank" rel="noopener noreferrer"
+                        class="font-mono text-xs underline underline-offset-4 text-fg/40 hover:text-accent">
+                            <span class="flex flex-row items-center gap-2">
+                                <Icon name={"simple-icons:github"} class="h-4.5 w-4.5"/>
+                                Website Repo ↗
+                            </span>
+                        </a>
+                        <span class="text-fg/40">·</span>
+                        <p class="font-mono text-xs text-fg/40">
+                            Last updated {lastCommitDate}
+                        </p>
+                    </div>
+
+                    <!-- Credit -->
+                    <div class="flex flex-wrap items-cetner gap-3 font-mono text-xs text-fg/40">
+                        <span>Built with</span>
+                        <a href={"https://astro.build/"} target="_blank" rel="noopener noreferrer"
+                        class="font-mono text-xs underline underline-offset-4 text-fg/40 hover:text-accent">
+                            <span class="flex flex-row items-center gap-2">
+                                <Icon name={"simple-icons:astro"} class="h-4.5 w-4.5"/>
+                                Astro ↗
+                            </span>
+                        </a>
+                        <span>framework · Palette by</span> 
+                        <a href={"https://catppuccin.com/"} target="_blank" rel="noopener noreferrer"
+                        class="font-mono text-xs underline underline-offset-4 text-fg/40 hover:text-accent">
+                            <span class="flex flex-row items-center gap-2">
+                                <Icon name={"lucide:palette"} class="h-4.5 w-4.5"/>
+                                Catppuccin ↗
+                            </span>
+                        </a>
+                    </div>
+                </div>
+
             </div>
+            
 
         </footer>
 

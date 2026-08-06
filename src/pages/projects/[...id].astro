@@ -100,7 +100,7 @@ const { Content } = await render(project);
                 <!-- Media -->
                 {media && media.length > 0 && (
                 <section class="mt-12">
-                    <div class="relative">
+                    <div>
                         <div
                             id={mediaScrollId}
                             class="media-scroll flex snap-x snap-mandatory gap-4 overflow-x-auto scroll-smooth pb-2"
@@ -108,51 +108,73 @@ const { Content } = await render(project);
                         {media.map((item, i) => (
                             <figure class="w-full shrink-0 snap-center" data-index={i}>
                                 <p class="text-md mb-1 font-mono uppercase text-accent">> {item.alt}</p>
-                                <Image
-                                    src={item.src}
-                                    alt={item.alt}
-                                    widths={[400, 800, 1200]}
-                                    sizes="(min-width: 1024px) 40rem, 100vw"
-                                    class="w-full rounded-lg border border-fg/15 object-cover"
-                                />
+                                <button
+                                    type="button"
+                                    class="media-open group block w-full cursor-zoom-in"
+                                    aria-label={`View ${item.alt} full size`}
+                                    data-caption={item.caption}
+                                >
+                                    <Image
+                                        src={item.src}
+                                        alt={item.alt}
+                                        widths={[400, 800, 1200]}
+                                        sizes="(min-width: 1024px) 40rem, 100vw"
+                                        class="w-full border-fg/15 border-2 rounded-sm transition-opacity group-hover:opacity-90"
+                                    />
+                                </button>
                                 <figcaption class="mt-2 font-mono text-xs text-fg/50">{item.caption}</figcaption>
                             </figure>
                         ))}
                         </div>
                         {media.length > 1 && (
                         <>
+                            
+                            
+                        </>
+                        )}
+                    </div>
+                    {/* Progress dots and directional media arrows */}
+                    {media.length > 1 && (
+                        <div class="flex flex-row justify-between">
                             <button
                                 type="button"
-                                class="media-prev absolute left-4 top-1/2 -translate-y-7 rounded-sm border border-fg/15 bg-bg/80 p-2 text-fg/60 backdrop-blur transition-colors hover:text-accent"
+                                class="media-prev rounded-sm border border-fg/15 bg-bg/80 p-2 text-fg/60 backdrop-blur transition-colors hover:text-accent"
                                 aria-label="Previous media"
                                 data-target={mediaScrollId}
                             >
                                 <Icon name="lucide:chevron-left" class="h-4 w-4" />
                             </button>
+                            <div class="mt-3 flex justify-center gap-2">
+                                {media.map((_, i) => (
+                                    <button
+                                        type="button"
+                                        class="media-dot h-1.5 w-1.5 bg-fg/25 transition-colors"
+                                        aria-label={`Go to media ${i + 1}`}
+                                        data-target={mediaScrollId}
+                                        data-index={i}
+                                    />
+                                ))}
+                            </div>
                             <button
                                 type="button"
-                                class="media-next absolute right-4 top-1/2 -translate-y-7 rounded-sm border border-fg/15 bg-bg/80 p-2 text-fg/60 backdrop-blur transition-colors hover:text-accent"
+                                class="media-next rounded-sm border border-fg/15 bg-bg/80 p-2 text-fg/60 backdrop-blur transition-colors hover:text-accent"
                                 aria-label="Next media"
                                 data-target={mediaScrollId}
                             >
                                 <Icon name="lucide:chevron-right" class="h-4 w-4" />
                             </button>
-                        </>
-                        )}
-                    </div>
-                    {media.length > 1 && (
-                    <div class="mt-3 flex justify-center gap-2">
-                        {media.map((_, i) => (
-                            <button
-                                type="button"
-                                class="media-dot h-1.5 w-1.5 bg-fg/25 transition-colors"
-                                aria-label={`Go to media ${i + 1}`}
-                                data-target={mediaScrollId}
-                                data-index={i}
-                            />
-                        ))}
-                    </div>
+                        </div>
+                    
                     )}
+
+                    {/* Lightbox */}
+                    <dialog id={`media-lightbox-${project.id}`} class="media-lightbox">
+                        <button type="button" class="lightbox-close" aria-label="Close">
+                            <Icon name="lucide:x" class="h-5 w-5" />
+                        </button>
+                        <img class="lightbox-img" alt="" />
+                        <p class="lightbox-caption"></p>
+                    </dialog>
                 </section>
                 )}
 
@@ -258,7 +280,36 @@ const { Content } = await render(project);
         });
     }
 
+    function bindMediaLightbox() {
+        document.querySelectorAll<HTMLDialogElement>('.media-lightbox').forEach((dialog) => {
+            if (dialog.dataset.lightboxBound) return;
+            dialog.dataset.lightboxBound = 'true';
+
+            const img = dialog.querySelector<HTMLImageElement>('.lightbox-img');
+            const caption = dialog.querySelector<HTMLElement>('.lightbox-caption');
+            const closeBtn = dialog.querySelector<HTMLButtonElement>('.lightbox-close');
+            const section = dialog.closest('section');
+
+            section?.querySelectorAll<HTMLButtonElement>('.media-open').forEach((btn) => {
+                btn.addEventListener('click', () => {
+                    const sourceImg = btn.querySelector('img');
+                    if (!sourceImg || !img) return;
+                    img.src = sourceImg.currentSrc || sourceImg.src;
+                    img.alt = sourceImg.alt;
+                    if (caption) caption.textContent = btn.dataset.caption ?? '';
+                    dialog.showModal();
+                });
+            });
+
+            closeBtn?.addEventListener('click', () => dialog.close());
+            dialog.addEventListener('click', (event) => {
+                if (event.target === dialog) dialog.close();
+            });
+        });
+    }
+
     document.addEventListener('astro:page-load', bindMediaGalleries);
+    document.addEventListener('astro:page-load', bindMediaLightbox);
 </script>
 
 <style>
@@ -274,9 +325,67 @@ const { Content } = await render(project);
     background: var(--color-accent);
     width: 1.25rem;
 }
-</style>
 
-<style>
+.media-lightbox {
+    position: fixed;
+    inset: 0;
+    display: none;
+    width: 100dvw;
+    height: 100dvh;
+    max-width: none;
+    max-height: none;
+    margin: 0;
+    border: none;
+    background: transparent;
+    padding: 2rem;
+}
+
+.media-lightbox[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.media-lightbox::backdrop {
+    background: color-mix(in oklab, var(--color-bg) 80%, transparent);
+}
+
+.lightbox-img {
+    max-width: 100%;
+    max-height: calc(100dvh - 6rem);
+    border-radius: 0.5rem;
+    object-fit: contain;
+}
+
+.lightbox-caption {
+    position: absolute;
+    right: 0;
+    bottom: 1.5rem;
+    left: 0;
+    max-width: 64rem;
+    margin-inline: auto;
+    padding-inline: 2rem;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0rem;
+    color: color-mix(in oklab, white 70%, transparent);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: 1rem;
+    right: 2rem;
+    border-radius: 2px;
+    background: color-mix(in oklab, black 40%, transparent);
+    padding: 0.5rem;
+    color: white;
+    transition: background-color 0.15s;
+}
+
+.lightbox-close:hover {
+    background: color-mix(in oklab, black 60%, transparent);
+}
+
 .content :global(h2) {
     margin-top: 2.5rem;
     font-size: 1.25rem;
