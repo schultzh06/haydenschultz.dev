@@ -3,7 +3,7 @@ title: "Music Audio Visualizer"
 hook: "Turns whatever's playing in your browser into a real-time, color-reactive 3D visualizer."
 summary: "Real-time 3D audio visualizer driven by FFT analysis, with Spotify integration for track metadata, album-reactive color palettes, and synced lyrics."
 period: "2026"
-order: 3
+order: 2
 role: "Sole Developer"
 tech:
   - TypeScript

@@ -4,7 +4,7 @@ role: "Sole Developer"
 hook: "Encrypts a message and hides the ciphertext in the low bits of a PNG."
 summary: "Python CLI that encrypts a message using AES-256-GCM and Argon2id key derivation, then embeds it in an image's least significant bits, where it can be symmetrically extracted by a recipient with the right passphrase."
 period: "2026"
-order: 2
+order: 4
 tech:
   - Python
   - cryptography
