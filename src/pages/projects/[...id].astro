@@ -241,36 +241,42 @@ const { Content } = await render(project);
             scroller.dataset.mediaBound = 'true';
 
             const id = scroller.id;
-            const figures = scroller.querySelectorAll<HTMLElement>('[data-index]');
+            const figures = Array.from(scroller.querySelectorAll<HTMLElement>('[data-index]'));
             const dots = document.querySelectorAll<HTMLElement>(`.media-dot[data-target="${id}"]`);
+
+            let currentIndex = 0;
+
+            const goToIndex = (index: number) => {
+                const clamped = Math.max(0, Math.min(figures.length - 1, index));
+                figures[clamped]?.scrollIntoView({
+                    behavior: 'smooth',
+                    inline: 'center',
+                    block: 'nearest',
+                });
+            };
 
             document.querySelectorAll<HTMLElement>(`.media-prev[data-target="${id}"], .media-next[data-target="${id}"]`)
                 .forEach((btn) => {
                     btn.addEventListener('click', () => {
                         const direction = btn.classList.contains('media-prev') ? -1 : 1;
-                        scroller.scrollBy({ left: direction * scroller.clientWidth, behavior: 'smooth' });
+                        goToIndex(currentIndex + direction);
                     });
                 });
 
             dots.forEach((dot) => {
-                dot.addEventListener('click', () => {
-                    figures[Number(dot.dataset.index)]?.scrollIntoView({
-                        behavior: 'smooth',
-                        inline: 'center',
-                        block: 'nearest',
-                    });
-                });
+                dot.addEventListener('click', () => goToIndex(Number(dot.dataset.index)));
             });
 
             if (dots.length === 0) return;
 
-            // Highlight whichever slide is currently centered in the scroller as the user scrolls or uses the arrows.
+            // Highlight whichever slide is currently centered in the scroller as the user scrolls or uses the arrows
             const observer = new IntersectionObserver(
                 (entries) => {
                     entries.forEach((entry) => {
                         if (!entry.isIntersecting) return;
-                        const index = (entry.target as HTMLElement).dataset.index;
-                        dots.forEach((dot) => dot.classList.toggle('is-active', dot.dataset.index === index));
+                        const index = Number((entry.target as HTMLElement).dataset.index);
+                        currentIndex = index;
+                        dots.forEach((dot) => dot.classList.toggle('is-active', Number(dot.dataset.index) === index));
                     });
                 },
                 { root: scroller, threshold: 0.6 }
@@ -297,6 +303,7 @@ const { Content } = await render(project);
                     img.src = sourceImg.currentSrc || sourceImg.src;
                     img.alt = sourceImg.alt;
                     if (caption) caption.textContent = btn.dataset.caption ?? '';
+                    document.documentElement.classList.add('lightbox-open');
                     dialog.showModal();
                 });
             });
@@ -304,6 +311,10 @@ const { Content } = await render(project);
             closeBtn?.addEventListener('click', () => dialog.close());
             dialog.addEventListener('click', (event) => {
                 if (event.target === dialog) dialog.close();
+            });
+            
+            dialog.addEventListener('close', () => {
+                document.documentElement.classList.remove('lightbox-open');
             });
         });
     }
@@ -324,6 +335,10 @@ const { Content } = await render(project);
 .media-dot.is-active {
     background: var(--color-accent);
     width: 1.25rem;
+}
+
+:global(html.lightbox-open) {
+    overflow: hidden;
 }
 
 .media-lightbox {
