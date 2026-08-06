@@ -119,10 +119,10 @@ const { Content } = await render(project);
                                         alt={item.alt}
                                         widths={[400, 800, 1200]}
                                         sizes="(min-width: 1024px) 40rem, 100vw"
-                                        class="w-full border-fg/15 border-2 rounded-sm transition-opacity group-hover:opacity-90"
+                                        class="w-full border-2 border-fg/15 rounded-sm transition-opacity group-hover:opacity-90"
                                     />
                                 </button>
-                                <figcaption class="mt-2 font-mono text-xs text-fg/50">{item.caption}</figcaption>
+                                <figcaption class="mt-2 min-h-8 font-mono text-xs text-fg/50">{item.caption}</figcaption>
                             </figure>
                         ))}
                         </div>

@@ -30,7 +30,7 @@ depth:
   - "Integrated Auth0's Management API so administrators provision and manage users from inside the app's own admin UI rather than the Auth0 dashboard, backed by JWT-verified route guards and role-based permissions."
 media:
   - src: "../media/insights-multiturn.png"
-    alt: "Multi-Turn AI NL to SQL Insights Conversation"
+    alt: "AI NL to SQL Insights"
     caption: "A follow-up question resolves against the previous turn — 'here' refers to the prior result set — and the renderer dispatches to a scorecard instead of a chart based on the shape the model returns."
   - src: "../media/insights-sql.png"
     alt: "Generated Insights SQL Query"
