@@ -63,3 +63,45 @@ in person.
 
 No Hanover proprietary data or documents appear in any screenshot or demo, in
 accordance with WPI's Student Project IP policy and this project's client agreement.
+
+## What it is
+
+A content management and analytics platform for insurance agencies — a central
+system for managing documents, links, employee records, and service requests,
+with AI-assisted querying layered on top.
+
+**Content management:** file or link-based content items with owner tracking,
+tagging, status/type/persona classification, expiration dates, and a full
+checkout/check-in locking system so two people can't overwrite the same edit.
+Includes a recycle bin with restore, bulk upload, an inline file previewer
+(PDF, DOCX, images, text), and a calendar view of upcoming expirations.
+
+**Collections:** user-curated, ordered groupings of content items, public or
+private, with favoriting and links to service requests.
+
+**Service requests:** a lightweight ticketing layer that can be linked to
+individual content items or whole collections, with assignees, deadlines, and
+type classification.
+
+**AI-powered Insights:** a chat interface where users ask questions about the
+data in plain English (e.g. "what's expiring this week" or "which underwriter
+has the most overdue requests") and get back a chart, table, or scorecard.
+Under the hood: an LLM translates the question into SQL constrained by a
+schema-aware system prompt, the generated query is validated against a
+read-only allowlist before it ever touches the database, and it executes on a
+separate read-only Postgres role — so the model never has write access,
+regardless of what it generates.
+
+**Global semantic search:** a single search bar that finds matches across
+content, collections, employees, and service requests by meaning, not just
+keyword, using OpenAI embeddings and pgvector similarity.
+
+**Customizable dashboard:** a per-employee widget grid (charts, recent files,
+quick links, assigned service requests, etc.) that's toggled, resized, and
+reordered per user, with the layout persisted to their profile.
+
+**Employee management:** admin CRUD for accounts, roles, and profile photos,
+provisioned through Auth0 so admins never touch the Auth0 dashboard directly.
+
+**Notifications:** a unified feed merging real content-change/ownership
+events with dynamic expiration alerts, dismissible per item.
