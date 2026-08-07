@@ -1,5 +1,5 @@
 ---
-title: "Insurance Content Management Application"
+title: "Insurance Content Management System"
 hook: "Content platform for an insurance client, with natural-language database querying on top."
 summary: "A content management platform for insurance agencies, centralizing internal documents of any format with in-browser preview, alongside employee administration, service-request tracking, natural-language data insights, and a customizable dashboard."
 role: "Assistant Lead Software Engineer, Scrum Lead"
@@ -48,7 +48,7 @@ media:
     alt: "Site Landing"
     caption: "Landing page, navigation, and hero. Unauthenticated users see the login gate; routes are protected by JWT."
 links:
-  repo: "https://github.com/schultzh06/insurance-cma-cs3733"
+  repo: "https://github.com/schultzh06/insurance-cms-cs3733"
 ---
 
 ## Context
