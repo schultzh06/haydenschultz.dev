@@ -59,7 +59,8 @@ const socials = SOCIALS.filter(({ name }) => name !== 'Contact');
                 
                 <a href="/" class="font-mono text-sm tracking-tight hover:text-accent">
                     <div class="flex flex-row gap-2 justify-center items-center">
-                        <image src="/favicon.svg" height="22px" width="22px" />
+                        <image src="/favicon.svg" height="22px" width="22px" class="hidden dark:block" />
+                        <image src="/favicon-light.svg" height="22px" width="22px" class="block dark:hidden" />
                         <span>haydenschultz<span class="text-accent">.dev</span></span>
                     </div>
                 </a>
