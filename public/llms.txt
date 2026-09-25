@@ -1,0 +1,17 @@
+# Hayden Schultz
+
+> Portfolio of Hayden Schultz, a CS student at WPI concentrating in cybersecurity and minoring in ECE. Work spans application security and systems engineering. Currently looking for a Summer 2027 internship.
+
+Each project below links to a full write-up covering role, stack, technical depth, and (where applicable) limitations and media.
+
+## Projects
+
+- [Insurance Content Management System](https://haydenschultz.dev/projects/insurance-cms): Content platform for an insurance client, with natural-language database querying on top.
+- [Music Audio Visualizer](https://haydenschultz.dev/projects/music-visualizer): Turns whatever's playing in your browser into a real-time, color-reactive 3D visualizer.
+- [Proxmox Detection Engineering & Hobby Homelab](https://haydenschultz.dev/projects/proxmox-homelab): Built a hardened Proxmox lab, attacked it myself, and proved the SIEM saw it.
+- [Subpixel](https://haydenschultz.dev/projects/subpixel): Encrypts a message and hides the ciphertext in the low bits of a PNG.
+
+## About
+
+- [Home](https://haydenschultz.dev/): Project index and stack overview.
+- [Contact & Resume](https://haydenschultz.dev/contact): Contact info, resume PDF, and current availability.

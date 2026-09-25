@@ -1,0 +1,38 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="404 - Page Not Found - Hayden Schultz" description="This page doesn't exist.">
+	<main class="mx-auto flex min-h-[60vh] max-w-5xl flex-col justify-center px-6 py-24">
+		<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/404</p>
+
+		<div class="mt-4 border-t border-fg/10 pt-10">
+
+			<!-- Fake terminal output -->
+			<div class="font-mono text-xs leading-relaxed text-fg/40">
+				<p><span class="text-accent">$</span> cd <span id="notfound-path">this-page</span></p>
+				<p class="text-red-400/80">cd: no such file or directory</p>
+			</div>
+
+			<h1 class="mt-6 text-4xl sm:text-5xl">Page not found</h1>
+			<p class="mt-4 max-w-lg text-lg leading-relaxed text-fg/70">
+				Whatever you were looking for isn't here — it may have moved, or never existed in the first place.
+			</p>
+
+			<div class="mt-8 flex flex-wrap items-center gap-5">
+				<a href="/" class="font-mono text-xs underline underline-offset-4 text-fg/50 hover:text-accent">
+					&larr; Back Home
+				</a>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<script>
+	function fillNotFoundPath() {
+		const el = document.getElementById('notfound-path');
+		if (el) el.textContent = location.pathname;
+	}
+
+	document.addEventListener('astro:page-load', fillNotFoundPath);
+</script>
