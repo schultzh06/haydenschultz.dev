@@ -40,6 +40,7 @@ const socials = SOCIALS.filter(({ name }) => name !== 'Contact');
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <slot name="head" />
 </head>
     <body class="grid min-h-screen grid-cols-1 grid-rows-[auto_1fr_auto]">
         <header class="sticky top-0 z-10">
