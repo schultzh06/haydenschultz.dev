@@ -1,0 +1,100 @@
+---
+// Section label that types itself out with a caret the first
+// full text always in the HTML for screen readers and no-JS; only the visible copy is typed.
+interface Props {
+	text: string;
+	class?: string;
+}
+
+const { text, class: className } = Astro.props;
+---
+
+<p class:list={['type-label font-mono text-md uppercase tracking-[0.15em] text-accent', className]}>
+	<span class="sr-only">{text}</span>
+	<span class="type-text" aria-hidden="true" data-text={text}>{text}</span><span class="type-caret" aria-hidden="true"></span>
+</p>
+
+<script>
+	const CHAR_MS = 45;
+
+	function typeOut(label: HTMLElement) {
+		const textEl = label.querySelector<HTMLElement>('.type-text');
+		const full = textEl?.dataset.text ?? '';
+		if (!textEl) return;
+
+		label.classList.add('is-typing');
+		let i = 0;
+		const step = () => {
+			i++;
+			textEl.textContent = full.slice(0, i);
+			if (i < full.length) {
+				setTimeout(step, CHAR_MS);
+			} else {
+				// Let the caret blink briefly before it disappears
+				setTimeout(() => label.classList.remove('is-typing'), 900);
+			}
+		};
+		setTimeout(step, 150 + pendingRevealDelay(label));
+	}
+
+	// If the label sits inside a .reveal block that's still waiting on its load-in delay,
+	// hold the typing until it starts fading in so it isn't typed while invisible
+	function pendingRevealDelay(label: HTMLElement) {
+		const anim = label.closest('.reveal')?.getAnimations().find((a) => a instanceof CSSAnimation);
+		const delay = Number(anim?.effect?.getTiming().delay ?? 0);
+		const elapsed = Number(anim?.currentTime ?? 0);
+		return Math.max(0, delay - elapsed);
+	}
+
+	function bindTypedLabels() {
+		if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+		const labels = Array.from(document.querySelectorAll<HTMLElement>('.type-label:not([data-typed-bound])'));
+		if (labels.length === 0) return;
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (!entry.isIntersecting) return;
+					observer.unobserve(entry.target);
+					typeOut(entry.target as HTMLElement);
+				});
+			},
+			{ rootMargin: '0px 0px -10% 0px' }
+		);
+
+		labels.forEach((label) => {
+			label.dataset.typedBound = 'true';
+			// Labels already scrolled past (e.g. back-navigation restoring scroll) stay as-is
+			if (label.getBoundingClientRect().bottom < 0) return;
+			const textEl = label.querySelector<HTMLElement>('.type-text');
+			if (textEl) textEl.textContent = '';
+			observer.observe(label);
+		});
+	}
+
+	document.addEventListener('astro:page-load', bindTypedLabels);
+</script>
+
+<style>
+	.type-caret {
+		display: inline-block;
+		width: 0.5em;
+		margin-left: 0.05em;
+		opacity: 0;
+	}
+
+	/* Always rendered (just invisible) so an empty label keeps its line height */
+	.type-caret::after {
+		content: '_';
+	}
+
+	.type-label.is-typing .type-caret {
+		opacity: 1;
+		animation: caret-blink 800ms steps(1) infinite;
+	}
+
+	@keyframes caret-blink {
+		50% { opacity: 0; }
+	}
+</style>

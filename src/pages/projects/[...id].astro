@@ -4,6 +4,7 @@ import Layout from '../../layouts/Layout.astro';
 
 import { Icon } from 'astro-icon/components';
 import { Image } from 'astro:assets';
+import { formatDate, getRecentPosts, postGlyph, projectGlyph } from '../../utils/posts';
 
 export async function getStaticPaths() {
     const projects = await getCollection('projects', ({ data }) => !data.draft);
@@ -18,48 +19,60 @@ const { title, hook, summary, role, period, tech, bullets, depth, limitations, l
 project.data;
 const mediaScrollId = `media-scroll-${project.id}`;
 const { Content } = await render(project);
+const projectPosts = await getRecentPosts({ project: project.id });
+const recentPosts = projectPosts.slice(0, 3);
+const morePosts = projectPosts.length - recentPosts.length;
 ---
 
 <Layout title={title + " - Hayden Schultz"} description={summary}>
     <article class="mx-auto max-w-5xl px-6 pb-24 pt-8">
-        <div class="grid gap-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+        <!--
+            Desktop: sticky sidebar (back, details, posts) beside the article.
+            Mobile: the sidebar and article wrappers become display:contents so their blocks can be
+            reordered via grid areas: back, title, details, write-up, then recent posts last.
+        -->
+        <div class="project-grid">
 
             <!-- Sticky side-bar (left) -->
-            <aside class="min-w-0 lg:sticky lg:top-25 lg:h-fit">
+            <aside class="project-aside min-w-0 lg:sticky lg:top-25 lg:h-fit">
 
                 <!-- Back button -->
-                <a
-                href="/"
-                class="font-mono text-sm text-fg/50 transition-colors hover:text-accent"
-                >
-                    &larr; Back
-                </a>
+                <div class="area-back">
+                    <a
+                    href="/"
+                    class="font-mono text-sm text-fg/50 transition-colors hover:text-accent"
+                    >
+                        &larr; Back
+                    </a>
 
-                <div class="mt-3 h-px w-full bg-fg/15" />
+                    <div class="mt-3 hidden h-px w-full bg-fg/15 lg:block" />
+                </div>
 
-                <!-- Role, Stack and Period -->
-                <dl class="space-y-6 font-mono text-xs mt-4">
+                <!-- Role, Stack, Period and links: a compact bordered strip on mobile -->
+                <div class="area-meta mt-8 border-y border-fg/15 py-5 lg:mt-0 lg:border-0 lg:py-0">
+                <dl class="grid grid-cols-2 gap-x-6 gap-y-4 font-mono text-xs lg:mt-4 lg:block lg:space-y-6">
                     {role && (
                     <div>
                         <dt class="uppercase tracking-[0.15em] text-fg/40">Role</dt>
                         <dd class="mt-2">{role}</dd>
                     </div>
                     )}
-                    <div>
+                    <div class="col-span-2 lg:col-span-1">
                         <dt class="uppercase tracking-[0.15em] text-fg/40">Stack</dt>
                         <dd class="mt-2 leading-relaxed">{tech.join(' · ')}</dd>
                     </div>
-                    <div>
+                    <!-- With a role present, Year sits beside it on mobile and Stack gets its own row -->
+                    <div class:list={[role && 'row-start-1 col-start-2 lg:row-auto lg:col-auto']}>
                         <dt class="uppercase tracking-[0.15em] text-fg/40">Year</dt>
                         <dd class="mt-2">{period}</dd>
                     </div>
                 </dl>
                 
-                <div class="mt-6 h-px w-full bg-fg/15" />
+                <div class="mt-6 hidden h-px w-full bg-fg/15 lg:block" />
 
                 <!-- Repo and/or Demo Links -->
                 {(links.repo || links.demo) && (
-                    <div class="mt-6 flex gap-3">
+                    <div class="mt-5 flex gap-3 lg:mt-6">
                     {links.repo && (
                         <a href={links.repo} target="_blank" rel="noopener noreferrer"
                         class="font-mono text-xs underline underline-offset-4 hover:text-accent">
@@ -81,17 +94,50 @@ const { Content } = await render(project);
                     )}
                     </div>
                 )}
+                </div>
+
+                <!-- Recent posts about this project (moves below the write-up on mobile) -->
+                {recentPosts.length > 0 && (
+                    <div class="area-posts mt-12 font-mono text-xs lg:mt-6">
+                        <div class="mb-6 h-px w-full bg-fg/15" />
+                        <p class="uppercase tracking-[0.15em] text-fg/40">Recent posts</p>
+                        <ul class="mt-3 space-y-2">
+                            {recentPosts.map((post) => (
+                                <li>
+                                    <a
+                                    href={`/posts/${post.id}`}
+                                    class="group flex flex-col rounded-sm border border-fg/10 p-3 transition-colors hover:border-accent/60"
+                                    >
+                                        <span class="flex items-center justify-between gap-2 text-fg/50">
+                                            {formatDate(post.data.published)}
+                                            <Icon name={postGlyph(post)} transition:name={`post-glyph-${post.id}`} class="h-3.5 w-3.5 shrink-0 transition-colors group-hover:text-accent" />
+                                        </span>
+                                        <span transition:name={`post-title-${post.id}`} class="mt-1.5 line-clamp-2 font-display text-base leading-snug text-fg transition-colors group-hover:text-accent">{post.data.title}</span>
+                                        <span transition:name={`post-desc-${post.id}`} class="mt-1 line-clamp-2 font-body text-xs leading-relaxed text-fg/60">{post.data.description}</span>
+                                    </a>
+                                </li>
+                            ))}
+                        </ul>
+                        <a href={`/posts?project=${project.id}`} class="mt-4 inline-block underline underline-offset-4 hover:text-accent">
+                            {morePosts > 0 ? `+${morePosts} more · ` : ''}All posts &rarr;
+                        </a>
+                    </div>
+                )}
             </aside>
 
             <!-- Article bulk -->
-            <div class="min-w-0">
+            <div class="project-main min-w-0">
 
                 <!-- Title and Hook (header) -->
-                <header class="mt-8">
-                    <h1 transition:name={`title-${project.id}`} class="mt-2 text-4xl sm:text-5xl">{title}</h1>
+                <header class="area-header mt-4 lg:mt-8">
+                    <h1 transition:name={`title-${project.id}`} class="mt-2 text-4xl sm:text-5xl">
+                        <!-- Inline glyph sized in em so it scales with the title; wrapped lines start at the icon's margin -->
+                        <Icon name={projectGlyph(project.id)} transition:name={`glyph-${project.id}`} class="mr-[0.2em] inline-block h-[0.8em] w-[0.8em] align-[-0.06em] text-accent" />{title}
+                    </h1>
                     <p transition:name={`hook-${project.id}`} class="mt-4 text-lg leading-relaxed text-fg/70">{hook}</p>
                 </header>
 
+                <div class="area-body min-w-0">
                 <!-- Brief -->
                 <p class="mt-10 font-display text-xl leading-snug text-fg sm:text-2xl">
                     {bullets.join(' ')}
@@ -228,6 +274,7 @@ const { Content } = await render(project);
                 <div class="content mt-12">
                     <Content />
                 </div>
+                </div>
                 
             </div>
         </div>
@@ -324,6 +371,50 @@ const { Content } = await render(project);
 </script>
 
 <style>
+.project-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "back"
+        "header"
+        "meta"
+        "body"
+        "posts";
+}
+
+.project-aside,
+.project-main {
+    display: contents;
+}
+
+.area-back { grid-area: back; }
+.area-header { grid-area: header; }
+.area-meta { grid-area: meta; }
+.area-body { grid-area: body; }
+.area-posts { grid-area: posts; }
+
+@media (min-width: 64rem) {
+    .project-grid {
+        grid-template-columns: 15rem minmax(0, 40rem);
+        grid-template-areas: none;
+        column-gap: 5rem;
+        align-items: start;
+    }
+
+    .project-aside,
+    .project-main {
+        display: block;
+    }
+
+    .area-back,
+    .area-header,
+    .area-meta,
+    .area-body,
+    .area-posts {
+        grid-area: auto;
+    }
+}
+
 .media-scroll {
     scrollbar-width: none;
 }
@@ -399,74 +490,5 @@ const { Content } = await render(project);
 
 .lightbox-close:hover {
     background: color-mix(in oklab, black 60%, transparent);
-}
-
-.content :global(h2) {
-    margin-top: 2.5rem;
-    font-size: 1.25rem;
-}
-
-.content :global(h2:first-child) {
-    margin-top: 0;
-}
-
-.content :global(p) {
-    margin-top: 1rem;
-    line-height: 1.75;
-    color: color-mix(in oklab, var(--color-fg) 80%, transparent);
-}
-
-.content :global(ul),
-.content :global(ol) {
-    margin-top: 1rem;
-    padding-left: 1.25rem;
-    color: color-mix(in oklab, var(--color-fg) 80%, transparent);
-}
-
-.content :global(ul) {
-    list-style: disc;
-}
-
-.content :global(ol) {
-    list-style: decimal;
-}
-
-.content :global(li + li) {
-    margin-top: 0.5rem;
-}
-
-.content :global(a) {
-    color: var(--color-accent);
-    text-underline-offset: 2px;
-}
-
-.content :global(code) {
-    border-radius: 0.25rem;
-    background: color-mix(in oklab, var(--color-fg) 6%, transparent);
-    padding: 0.15em 0.4em;
-    font-size: 0.85em;
-}
-
-.content :global(pre) {
-    margin-top: 1rem;
-    overflow-x: auto;
-    border-radius: 0.5rem;
-    border: 1px solid color-mix(in oklab, var(--color-fg) 10%, transparent);
-    background: color-mix(in oklab, var(--color-fg) 4%, transparent);
-    padding: 1rem;
-    font-size: 0.8rem;
-    line-height: 1.6;
-}
-
-.content :global(pre code) {
-    background: none;
-    padding: 0;
-}
-
-.content :global(blockquote) {
-    margin-top: 1rem;
-    border-left: 2px solid var(--color-accent);
-    padding-left: 1rem;
-    color: color-mix(in oklab, var(--color-fg) 60%, transparent);
 }
 </style>

@@ -1,0 +1,89 @@
+---
+import { getCollection, getEntry, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { Icon } from 'astro-icon/components';
+import { formatDate, postGlyph } from '../../utils/posts';
+
+export async function getStaticPaths() {
+    const posts = await getCollection('posts', ({ data }) => !data.draft);
+    return posts.map((post) => ({
+        params: { id: post.id },
+        props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+const { title, description, published, updated, tags } = post.data;
+const project = post.data.project ? await getEntry(post.data.project) : undefined;
+const { Content } = await render(post);
+---
+
+<Layout title={title + ' - Hayden Schultz'} description={description}>
+    <article class="mx-auto max-w-5xl px-6 pb-24 pt-8">
+        <div class="grid gap-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+
+            <!-- Sticky side-bar (left) -->
+            <aside class="min-w-0 lg:sticky lg:top-25 lg:h-fit">
+                <a href="/posts" class="font-mono text-sm text-fg/50 transition-colors hover:text-accent">
+                    &larr; All posts
+                </a>
+
+                <div class="mt-3 h-px w-full bg-fg/15" />
+
+                <dl class="mt-4 space-y-6 font-mono text-xs">
+                    <div>
+                        <dt class="uppercase tracking-[0.15em] text-fg/40">Published</dt>
+                        <dd class="mt-2">{formatDate(published)}</dd>
+                    </div>
+                    {updated && (
+                        <div>
+                            <dt class="uppercase tracking-[0.15em] text-fg/40">Updated</dt>
+                            <dd class="mt-2">{formatDate(updated)}</dd>
+                        </div>
+                    )}
+                    {project && (
+                        <div>
+                            <dt class="uppercase tracking-[0.15em] text-fg/40">Project</dt>
+                            <dd class="mt-2 space-y-1">
+                                <a href={`/projects/${project.id}`} class="block underline underline-offset-4 hover:text-accent">
+                                    {project.data.title}
+                                </a>
+                                <a href={`/posts?project=${project.id}`} class="block text-fg/50 hover:text-accent">
+                                    More posts &rarr;
+                                </a>
+                            </dd>
+                        </div>
+                    )}
+                    {tags.length > 0 && (
+                        <div>
+                            <dt class="uppercase tracking-[0.15em] text-fg/40">Tags</dt>
+                            <dd class="mt-2 flex flex-wrap gap-x-3 gap-y-1">
+                                {tags.map((tag) => (
+                                    <a href={`/posts?tag=${encodeURIComponent(tag)}`} class="hover:text-accent">#{tag}</a>
+                                ))}
+                            </dd>
+                        </div>
+                    )}
+                </dl>
+            </aside>
+
+            <!-- Post body -->
+            <div class="min-w-0">
+                <header class="mt-8">
+                    <h1 transition:name={`post-title-${post.id}`} class="mt-2 text-4xl sm:text-5xl">
+                        <!-- Inline glyph sized in em so it scales with the title; wrapped lines start at the icon's margin -->
+                        <Icon name={postGlyph(post)} transition:name={`post-glyph-${post.id}`} class="mr-[0.2em] inline-block h-[0.8em] w-[0.8em] align-[-0.06em] text-accent" />{title}
+                    </h1>
+                    <p transition:name={`post-desc-${post.id}`} class="mt-4 text-lg leading-relaxed text-fg/70">{description}</p>
+                </header>
+
+                <div class="mt-12 h-px w-full bg-fg/15" />
+
+                <div class="content mt-12">
+                    <Content />
+                </div>
+            </div>
+
+        </div>
+    </article>
+</Layout>

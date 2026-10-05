@@ -1,4 +1,4 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, reference } from 'astro:content';
 import { glob } from 'astro/loaders';
 import { z } from 'astro/zod';
 
@@ -28,23 +28,19 @@ const projects = defineCollection({
         alt: z.string(),
         caption: z.string(),
     })).optional(),
-
-    writeups: z.array(z.object({
-        title: z.string(),
-        entry: z.string(),
-    })).optional(),
     }),
 });
 
 const posts = defineCollection({
     loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
     schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    published: z.coerce.date(),
-    updated: z.coerce.date().optional(),
-    draft: z.boolean().default(false),
-    tags: z.array(z.string()).default([]),
+        project: reference('projects').optional(),
+        title: z.string(),
+        description: z.string(),
+        published: z.coerce.date(),
+        updated: z.coerce.date().optional(),
+        draft: z.boolean().default(false),
+        tags: z.array(z.string()).default([]),
     }),
 });
 
