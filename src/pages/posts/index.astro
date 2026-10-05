@@ -1,7 +1,8 @@
 ---
 import { getCollection } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import { formatDate, getRecentPosts } from '../../utils/posts';
+import { Icon } from 'astro-icon/components';
+import { formatDate, getRecentPosts, postGlyph } from '../../utils/posts';
 
 const posts = await getRecentPosts();
 
@@ -86,12 +87,13 @@ const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
                                 data-search={`${title} ${description}`.toLowerCase()}
                             >
                                 <a href={`/posts/${post.id}`} class="group block">
-                                    <p class="font-mono text-xs text-fg/50">
+                                    <p class="flex items-center gap-2 font-mono text-xs text-fg/50">
+                                        <Icon name={postGlyph(post)} transition:name={`post-glyph-${post.id}`} class="h-3.5 w-3.5 shrink-0 transition-colors group-hover:text-accent" />
                                         {formatDate(published)}
                                         {project && <span> · {projectTitles.get(project.id) ?? project.id}</span>}
                                     </p>
-                                    <h2 class="mt-1 text-2xl transition-colors group-hover:text-accent">{title}</h2>
-                                    <p class="mt-2 text-sm leading-relaxed text-fg/70">{description}</p>
+                                    <h2 transition:name={`post-title-${post.id}`} class="mt-1 text-2xl transition-colors group-hover:text-accent">{title}</h2>
+                                    <p transition:name={`post-desc-${post.id}`} class="mt-2 text-sm leading-relaxed text-fg/70">{description}</p>
                                 </a>
                                 {tags.length > 0 && (
                                     <p class="mt-2 font-mono text-xs text-fg/40">{tags.map((t) => `#${t}`).join(' ')}</p>

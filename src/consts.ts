@@ -51,3 +51,16 @@ export const STACKROWS: StackItem[][] = [
     { name: 'Agile/Scrum',      icon: 'mdi:sync' },
   ],
 ];
+
+// Glyph shown wherever a project (or a post about it) appears, keyed by project id (its filename).
+export const PROJECT_GLYPHS: Record<string, string> = {
+  'docket':            'lucide:calendar-check',
+  'subpixel':          'lucide:scan-eye',
+  'insurance-cms':     'lucide:database-search',
+  'music-visualizer':  'lucide:audio-waveform',
+  'proxmox-homelab':   'lucide:server',
+};
+
+export const DEFAULT_PROJECT_GLYPH = 'lucide:folder';
+// Posts that aren't tied to a project
+export const GLOBAL_POST_GLYPH = 'lucide:pen-line';

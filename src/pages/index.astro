@@ -3,59 +3,104 @@ import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
 import StackMarquee from '../components/StackMarquee.astro';
 import Hero from '../components/Hero.astro';
+import TypedLabel from '../components/TypedLabel.astro';
 import { Image } from 'astro:assets';
-import { formatDate, getRecentPosts } from '../utils/posts';
+import { Icon } from 'astro-icon/components';
+import { formatDate, getRecentPosts, postGlyph, projectGlyph } from '../utils/posts';
 
 const projects = (await getCollection('projects', ({ data }) => !data.draft))
 .sort((a, b) => a.data.order - b.data.order);
-const recentPosts = await getRecentPosts({ limit: 3 });
+const allPosts = await getRecentPosts();
+const recentPosts = allPosts.slice(0, 3);
+const morePosts = allPosts.length - recentPosts.length;
+// Glyphs previewed inside the "view all" card for the posts after the first 3
+const previewPosts = allPosts.slice(3, 7);
+
+// Cascade order for the load-in fade (see .reveal styles): posts header, post cards, view-all card,
+// projects header, project rows, about
+const PROJECTS_HEADER_STEP = recentPosts.length + 2;
 ---
 
 <Layout title="Portfolio - Hayden Schultz">
-	<main class="mx-auto max-w-5xl px-6 pb-24">
+	<main class="mx-auto max-w-5xl px-6 pb-24" data-reveal-root>
 
 		<Hero />
 
 		<StackMarquee />
 
-		<!-- Recent posts: kept to compact one-line rows so projects stay above the fold -->
+		<!-- Recent Posts: one row of 3 cards + a "view all" card, kept short so projects stay above the fold -->
 		{recentPosts.length > 0 && (
-			<section class="mt-12 grid gap-4 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
-				<div class="flex items-baseline justify-between lg:block">
-					<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/Posts</p>
-					<a href="/posts" class="font-mono text-xs underline underline-offset-4 hover:text-accent lg:mt-2 lg:inline-block">ALL POSTS &rarr;</a>
+			<section class="mt-12">
+				<div class="reveal grid gap-4 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20" style="--i: 0">
+					<TypedLabel text="~/Posts" />
 				</div>
 
-				<ul class="border-t border-fg/10">
-					{recentPosts.map((post) => (
-						<li class="border-b border-fg/10">
-							<a href={`/posts/${post.id}`} class="group flex items-baseline gap-4 py-2.5">
-								<span class="w-24 shrink-0 font-mono text-xs text-fg/50">{formatDate(post.data.published)}</span>
-								<span class="min-w-0 truncate transition-colors group-hover:text-accent">{post.data.title}</span>
-								<span class="ml-auto font-mono text-accent transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none" aria-hidden="true">&rarr;</span>
+				<ul class="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
+					{recentPosts.map((post, i) => (
+						<li class="reveal" style={`--i: ${i + 1}`} data-reveal-key={`/posts/${post.id}`}>
+							<a
+							href={`/posts/${post.id}`}
+							class="post-card group relative flex h-full flex-col rounded-sm border border-fg/10 p-4 transition-colors hover:border-accent/60"
+							>
+								<span class="flex items-center justify-between gap-2 font-mono text-xs text-fg/50">
+									{formatDate(post.data.published)}
+									<Icon name={postGlyph(post)} transition:name={`post-glyph-${post.id}`} class="h-4 w-4 shrink-0 transition-colors group-hover:text-accent" />
+								</span>
+								<span transition:name={`post-title-${post.id}`} class="mt-2 line-clamp-2 font-display text-lg leading-snug transition-colors group-hover:text-accent">{post.data.title}</span>
+								<span transition:name={`post-desc-${post.id}`} class="mt-1 line-clamp-2 text-sm leading-relaxed text-fg/60">{post.data.description}</span>
 							</a>
 						</li>
 					))}
+					<li class="reveal" style={`--i: ${recentPosts.length + 1}`}>
+						<a
+						href="/posts"
+						class="group flex h-full flex-col justify-between rounded-sm border border-dashed border-fg/20 p-4 font-mono text-xs transition-colors hover:border-accent/60"
+						>
+							<span class="flex items-start justify-between gap-2">
+								<span class="uppercase tracking-[0.15em] text-fg/50">
+									{morePosts > 0 ? `+${morePosts} more` : 'Archive'}
+								</span>
+								<Icon name="lucide:library-big" class="h-8 w-8 text-fg opacity-25 transition group-hover:text-accent group-hover:opacity-100" />
+							</span>
+							{previewPosts.length > 0 && (
+								<span class="mt-4 flex items-center gap-2 text-fg/50" aria-hidden="true">
+									{previewPosts.map((post) => (
+										<Icon name={postGlyph(post)} transition:name={`post-glyph-${post.id}`} class="h-5 w-5 shrink-0" />
+									))}
+									{morePosts > previewPosts.length && <span>&hellip;</span>}
+								</span>
+							)}
+							<span class="mt-4 text-accent">
+								VIEW ALL
+								<span class="inline-block transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none" aria-hidden="true">&rarr;</span>
+							</span>
+						</a>
+					</li>
 				</ul>
 			</section>
 		)}
 
 		<!-- Projects Header/Divider -->
-		<div class="mt-12 grid gap-4 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
-			<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/Projects</p>
+		<div class="reveal mt-12 grid gap-4 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20" style={`--i: ${PROJECTS_HEADER_STEP}`}>
+			<TypedLabel text="~/Projects" />
 		</div>
 
 		<section class="mt-4 border-t border-fg/10">
-			{projects.map((project) => {
+			{projects.map((project, i) => {
 				const previewMedia = project.data.media?.slice(0, 5) ?? [];
 				const remaining = (project.data.media?.length ?? 0) - previewMedia.length;
 				return (
 				<a
 				href={`/projects/${project.id}`}
-				class="group grid gap-4 border-b border-fg/10 py-10 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20"
+				class="project-row reveal group relative grid gap-4 border-b border-fg/10 py-10 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20"
+				style={`--i: ${PROJECTS_HEADER_STEP + 1 + i}`}
+				data-reveal-key={`/projects/${project.id}`}
 				>
 				<div class="font-mono text-xs">
-					<p class="uppercase tracking-[0.15em] text-accent/70">{project.data.period}</p>
+					<p class="flex items-center gap-2 uppercase tracking-[0.15em] text-accent/70">
+						<Icon name={projectGlyph(project.id)} transition:name={`glyph-${project.id}`} class="h-4 w-4 shrink-0" />
+						{project.data.period}
+					</p>
 					<p class="mt-2 text-fg/50">{project.data.tech.slice(0, 4).join(' · ')} · <i>more...</i></p>
 
 					{previewMedia.length > 0 && (
@@ -66,7 +111,7 @@ const recentPosts = await getRecentPosts({ limit: 3 });
 									src={item.src}
 									alt={item.alt}
 									width={72}
-									class="h-full w-full object-cover"
+									class="h-full w-full object-cover opacity-80 grayscale-60 transition duration-300 group-hover:scale-105 group-hover:opacity-100 group-hover:grayscale-0 motion-reduce:transform-none"
 								/>
 								{i === previewMedia.length - 1 && remaining > 0 && (
 									<div class="absolute inset-0 flex items-center justify-center bg-bg/70 text-[0.7rem] text-fg backdrop-blur-sm">
@@ -94,14 +139,14 @@ const recentPosts = await getRecentPosts({ limit: 3 });
 			})}
 			</section>
 
-		<section class="grid gap-4 pt-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
-			<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/About</p>
+		<section class="reveal grid gap-4 pt-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20" style={`--i: ${PROJECTS_HEADER_STEP + 1 + projects.length}`}>
+			<TypedLabel text="~/About" />
 
 			<div>
 				<p class="leading-relaxed text-fg/80">
 				CS student at WPI concentrating in cybersecurity, minoring in ECE.
 				Most of what I build lands somewhere between application security and
-				systems work. Currently looking for a Summer 2027 internship.
+				systems work. Spending Summer 2027 as a Software Engineering Intern at Collins Aerospace.
 				</p>
 
 				<a href="/contact" class="font-mono text-xs underline underline-offset-4 hover:text-accent">CONTACT, RESUME & MORE &rarr;</a>
@@ -110,3 +155,133 @@ const recentPosts = await getRecentPosts({ limit: 3 });
 
 	</main>
 </Layout>
+
+<script>
+	// Two reveal modes for .reveal items:
+	//  - In view on first load: a pure-CSS cascade (runs from first paint, so no flash and no JS needed).
+	//  - Below the fold: switched to .on-scroll and faded in by an IntersectionObserver when reached.
+	// The cascade also replays on client-side navigation, except for the row/card for the page we
+	// just came from: its title/hook/glyph are morphing back into it via transition:name, so it must
+	// be visible immediately or the morph lands on an invisible element.
+	let previousPath: string | null = null;
+
+	document.addEventListener('astro:before-preparation', (event) => {
+		previousPath = event.from.pathname.replace(/\/$/, '');
+	});
+
+	document.addEventListener('astro:after-swap', () => {
+		if (!previousPath) return;
+		document.querySelectorAll<HTMLElement>('[data-reveal-key]').forEach((el) => {
+			if (el.dataset.revealKey === previousPath) el.classList.add('no-reveal');
+		});
+	});
+
+	function bindScrollReveal() {
+		const root = document.querySelector<HTMLElement>('[data-reveal-root]');
+		if (!root || root.dataset.revealBound || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		root.dataset.revealBound = 'true';
+
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries
+					.filter((entry) => entry.isIntersecting)
+					.forEach((entry, i) => {
+						const el = entry.target as HTMLElement;
+						// Stagger items that enter together
+						el.style.transitionDelay = `${i * 80}ms`;
+						el.classList.add('is-visible');
+						observer.unobserve(el);
+					});
+			},
+			{ rootMargin: '0px 0px -8% 0px' }
+		);
+
+		root.querySelectorAll<HTMLElement>('.reveal').forEach((el) => {
+			if (el.getBoundingClientRect().top < window.innerHeight) return; // handled by the CSS cascade
+			el.classList.add('on-scroll');
+			observer.observe(el);
+		});
+	}
+
+	document.addEventListener('astro:page-load', bindScrollReveal);
+</script>
+
+<style>
+	/* Load-in cascade; starts after the hero's own intro, then steps by --i */
+	.reveal {
+		animation: reveal-in 700ms cubic-bezier(0.22, 1, 0.36, 1) both;
+		animation-delay: calc(900ms + var(--i, 0) * 90ms);
+	}
+
+	.reveal.no-reveal {
+		animation: none;
+	}
+
+	.reveal.on-scroll {
+		animation: none;
+		transition: opacity 600ms ease-out, transform 600ms ease-out;
+	}
+
+	.reveal.on-scroll:not(.is-visible) {
+		opacity: 0;
+		transform: translateY(1rem);
+	}
+
+	@keyframes reveal-in {
+		from {
+			opacity: 0;
+			transform: translateY(0.75rem);
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.reveal {
+			animation: none;
+		}
+	}
+
+	/* Accent bar that grows in on the left edge of a hovered/focused project row */
+	.project-row::before {
+		content: '';
+		position: absolute;
+		top: 2.5rem;
+		bottom: 2.5rem;
+		left: -0.875rem;
+		width: 2px;
+		background: var(--color-accent);
+		transform: scaleY(0);
+		transform-origin: center;
+		transition: transform 250ms ease-out;
+	}
+
+	.project-row:hover::before,
+	.project-row:focus-visible::before {
+		transform: scaleY(1);
+	}
+
+	/* Same idea for post cards: a bar under the card that grows out from the center */
+	.post-card::after {
+		content: '';
+		position: absolute;
+		left: 0.25rem;
+		right: 0.25rem;
+		bottom: -6px;
+		height: 2px;
+		background: var(--color-accent);
+		transform: scaleX(0);
+		transform-origin: center;
+		transition: transform 250ms ease-out;
+	}
+
+	.post-card:hover::after,
+	.post-card:focus-visible::after {
+		transform: scaleX(1);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.project-row::before,
+		.post-card::after {
+			transition: none;
+		}
+	}
+</style>

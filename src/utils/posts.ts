@@ -1,4 +1,5 @@
-import { getCollection } from 'astro:content';
+import { getCollection, type CollectionEntry } from 'astro:content';
+import { DEFAULT_PROJECT_GLYPH, GLOBAL_POST_GLYPH, PROJECT_GLYPHS } from '../consts';
 
 // Dates in frontmatter are parsed as UTC midnight; format in UTC so they don't shift a day in US timezones
 export const formatDate = (date: Date) =>
@@ -13,3 +14,8 @@ export async function getRecentPosts({ project, limit }: { project?: string; lim
     posts.sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf());
     return limit ? posts.slice(0, limit) : posts;
 }
+
+export const projectGlyph = (projectId: string) => PROJECT_GLYPHS[projectId] ?? DEFAULT_PROJECT_GLYPH;
+
+export const postGlyph = (post: CollectionEntry<'posts'>) =>
+    post.data.project ? projectGlyph(post.data.project.id) : GLOBAL_POST_GLYPH;

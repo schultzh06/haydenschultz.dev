@@ -1,6 +1,6 @@
 # Hayden Schultz
 
-> Portfolio of Hayden Schultz, a CS student at WPI concentrating in cybersecurity and minoring in ECE. Work spans application security and systems engineering. Currently looking for a Summer 2027 internship.
+> Portfolio of Hayden Schultz, a CS student at WPI concentrating in cybersecurity and minoring in ECE. Work spans application security and systems engineering. Incoming Software Engineering Intern at Collins Aerospace for Summer 2027.
 
 Each project below links to a full write-up covering role, stack, technical depth, and (where applicable) limitations and media.
 

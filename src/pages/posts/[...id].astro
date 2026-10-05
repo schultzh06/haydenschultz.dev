@@ -1,7 +1,8 @@
 ---
 import { getCollection, getEntry, render } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
-import { formatDate } from '../../utils/posts';
+import { Icon } from 'astro-icon/components';
+import { formatDate, postGlyph } from '../../utils/posts';
 
 export async function getStaticPaths() {
     const posts = await getCollection('posts', ({ data }) => !data.draft);
@@ -69,8 +70,11 @@ const { Content } = await render(post);
             <!-- Post body -->
             <div class="min-w-0">
                 <header class="mt-8">
-                    <h1 class="mt-2 text-4xl sm:text-5xl">{title}</h1>
-                    <p class="mt-4 text-lg leading-relaxed text-fg/70">{description}</p>
+                    <h1 transition:name={`post-title-${post.id}`} class="mt-2 text-4xl sm:text-5xl">
+                        <!-- Inline glyph sized in em so it scales with the title; wrapped lines start at the icon's margin -->
+                        <Icon name={postGlyph(post)} transition:name={`post-glyph-${post.id}`} class="mr-[0.2em] inline-block h-[0.8em] w-[0.8em] align-[-0.06em] text-accent" />{title}
+                    </h1>
+                    <p transition:name={`post-desc-${post.id}`} class="mt-4 text-lg leading-relaxed text-fg/70">{description}</p>
                 </header>
 
                 <div class="mt-12 h-px w-full bg-fg/15" />
