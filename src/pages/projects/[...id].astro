@@ -26,44 +26,53 @@ const morePosts = projectPosts.length - recentPosts.length;
 
 <Layout title={title + " - Hayden Schultz"} description={summary}>
     <article class="mx-auto max-w-5xl px-6 pb-24 pt-8">
-        <div class="grid gap-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+        <!--
+            Desktop: sticky sidebar (back, details, posts) beside the article.
+            Mobile: the sidebar and article wrappers become display:contents so their blocks can be
+            reordered via grid areas: back, title, details, write-up, then recent posts last.
+        -->
+        <div class="project-grid">
 
             <!-- Sticky side-bar (left) -->
-            <aside class="min-w-0 lg:sticky lg:top-25 lg:h-fit">
+            <aside class="project-aside min-w-0 lg:sticky lg:top-25 lg:h-fit">
 
                 <!-- Back button -->
-                <a
-                href="/"
-                class="font-mono text-sm text-fg/50 transition-colors hover:text-accent"
-                >
-                    &larr; Back
-                </a>
+                <div class="area-back">
+                    <a
+                    href="/"
+                    class="font-mono text-sm text-fg/50 transition-colors hover:text-accent"
+                    >
+                        &larr; Back
+                    </a>
 
-                <div class="mt-3 h-px w-full bg-fg/15" />
+                    <div class="mt-3 h-px w-full bg-fg/15" />
+                </div>
 
-                <!-- Role, Stack and Period -->
-                <dl class="space-y-6 font-mono text-xs mt-4">
+                <!-- Role, Stack, Period and links: a compact bordered strip on mobile -->
+                <div class="area-meta mt-8 border-y border-fg/15 py-5 lg:mt-0 lg:border-0 lg:py-0">
+                <dl class="grid grid-cols-2 gap-x-6 gap-y-4 font-mono text-xs lg:mt-4 lg:block lg:space-y-6">
                     {role && (
                     <div>
                         <dt class="uppercase tracking-[0.15em] text-fg/40">Role</dt>
                         <dd class="mt-2">{role}</dd>
                     </div>
                     )}
-                    <div>
+                    <div class="col-span-2 lg:col-span-1">
                         <dt class="uppercase tracking-[0.15em] text-fg/40">Stack</dt>
                         <dd class="mt-2 leading-relaxed">{tech.join(' · ')}</dd>
                     </div>
-                    <div>
+                    <!-- With a role present, Year sits beside it on mobile and Stack gets its own row -->
+                    <div class:list={[role && 'row-start-1 col-start-2 lg:row-auto lg:col-auto']}>
                         <dt class="uppercase tracking-[0.15em] text-fg/40">Year</dt>
                         <dd class="mt-2">{period}</dd>
                     </div>
                 </dl>
                 
-                <div class="mt-6 h-px w-full bg-fg/15" />
+                <div class="mt-6 hidden h-px w-full bg-fg/15 lg:block" />
 
                 <!-- Repo and/or Demo Links -->
                 {(links.repo || links.demo) && (
-                    <div class="mt-6 flex gap-3">
+                    <div class="mt-5 flex gap-3 lg:mt-6">
                     {links.repo && (
                         <a href={links.repo} target="_blank" rel="noopener noreferrer"
                         class="font-mono text-xs underline underline-offset-4 hover:text-accent">
@@ -85,10 +94,11 @@ const morePosts = projectPosts.length - recentPosts.length;
                     )}
                     </div>
                 )}
+                </div>
 
-                <!-- Recent posts about this project -->
+                <!-- Recent posts about this project (moves below the write-up on mobile) -->
                 {recentPosts.length > 0 && (
-                    <div class="mt-6 font-mono text-xs">
+                    <div class="area-posts mt-12 font-mono text-xs lg:mt-6">
                         <div class="mb-6 h-px w-full bg-fg/15" />
                         <p class="uppercase tracking-[0.15em] text-fg/40">Recent posts</p>
                         <ul class="mt-3 space-y-2">
@@ -116,10 +126,10 @@ const morePosts = projectPosts.length - recentPosts.length;
             </aside>
 
             <!-- Article bulk -->
-            <div class="min-w-0">
+            <div class="project-main min-w-0">
 
                 <!-- Title and Hook (header) -->
-                <header class="mt-8">
+                <header class="area-header mt-8">
                     <h1 transition:name={`title-${project.id}`} class="mt-2 text-4xl sm:text-5xl">
                         <!-- Inline glyph sized in em so it scales with the title; wrapped lines start at the icon's margin -->
                         <Icon name={projectGlyph(project.id)} transition:name={`glyph-${project.id}`} class="mr-[0.2em] inline-block h-[0.8em] w-[0.8em] align-[-0.06em] text-accent" />{title}
@@ -127,6 +137,7 @@ const morePosts = projectPosts.length - recentPosts.length;
                     <p transition:name={`hook-${project.id}`} class="mt-4 text-lg leading-relaxed text-fg/70">{hook}</p>
                 </header>
 
+                <div class="area-body min-w-0">
                 <!-- Brief -->
                 <p class="mt-10 font-display text-xl leading-snug text-fg sm:text-2xl">
                     {bullets.join(' ')}
@@ -263,6 +274,7 @@ const morePosts = projectPosts.length - recentPosts.length;
                 <div class="content mt-12">
                     <Content />
                 </div>
+                </div>
                 
             </div>
         </div>
@@ -359,6 +371,50 @@ const morePosts = projectPosts.length - recentPosts.length;
 </script>
 
 <style>
+.project-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+        "back"
+        "header"
+        "meta"
+        "body"
+        "posts";
+}
+
+.project-aside,
+.project-main {
+    display: contents;
+}
+
+.area-back { grid-area: back; }
+.area-header { grid-area: header; }
+.area-meta { grid-area: meta; }
+.area-body { grid-area: body; }
+.area-posts { grid-area: posts; }
+
+@media (min-width: 64rem) {
+    .project-grid {
+        grid-template-columns: 15rem minmax(0, 40rem);
+        grid-template-areas: none;
+        column-gap: 5rem;
+        align-items: start;
+    }
+
+    .project-aside,
+    .project-main {
+        display: block;
+    }
+
+    .area-back,
+    .area-header,
+    .area-meta,
+    .area-body,
+    .area-posts {
+        grid-area: auto;
+    }
+}
+
 .media-scroll {
     scrollbar-width: none;
 }

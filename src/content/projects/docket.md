@@ -1,10 +1,10 @@
 ---
 title: "Docket"
-hook: "A self-hosted academic dashboard that merges Canvas and email into one terminal agenda, without data leaving the homelab."
+hook: "A work-in-progress self-hosted academic dashboard that merges Canvas and email into one terminal agenda, without data leaving the homelab."
 summary: "A single-user Go daemon that ingests Canvas, email, and calendar sources into SQLite, serves them over a Connect-RPC API reachable only through Tailscale, and presents a merged agenda in an Ink terminal UI, with a local LLM layer planned for summarizing and triaging untrusted mail."
 role: "Sole Developer"
 period: "2026"
-order: 5
+order: 3
 tech:
   - Go
   - Connect-RPC

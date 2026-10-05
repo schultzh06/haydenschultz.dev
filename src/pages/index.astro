@@ -54,13 +54,13 @@ const PROJECTS_HEADER_STEP = recentPosts.length + 2;
 					<li class="reveal" style={`--i: ${recentPosts.length + 1}`}>
 						<a
 						href="/posts"
-						class="group flex h-full flex-col justify-between rounded-sm border border-dashed border-fg/20 p-4 font-mono text-xs transition-colors hover:border-accent/60"
+						class="post-card group relative flex h-full flex-col justify-between rounded-sm border border-dashed border-fg/20 p-4 font-mono text-xs transition-colors hover:border-accent/60"
 						>
 							<span class="flex items-start justify-between gap-2">
 								<span class="uppercase tracking-[0.15em] text-fg/50">
 									{morePosts > 0 ? `+${morePosts} more` : 'Archive'}
 								</span>
-								<Icon name="lucide:library-big" class="h-8 w-8 text-fg opacity-25 transition group-hover:text-accent group-hover:opacity-100" />
+								<Icon name="lucide:library-big" class="h-4 w-4 shrink-0 text-fg opacity-25 transition group-hover:text-accent group-hover:opacity-100" />
 							</span>
 							{previewPosts.length > 0 && (
 								<span class="mt-4 flex items-center gap-2 text-fg/50" aria-hidden="true">
@@ -85,14 +85,14 @@ const PROJECTS_HEADER_STEP = recentPosts.length + 2;
 			<TypedLabel text="~/Projects" />
 		</div>
 
-		<section class="mt-4 border-t border-fg/10">
+		<section class="mt-4">
 			{projects.map((project, i) => {
 				const previewMedia = project.data.media?.slice(0, 5) ?? [];
 				const remaining = (project.data.media?.length ?? 0) - previewMedia.length;
 				return (
 				<a
 				href={`/projects/${project.id}`}
-				class="project-row reveal group relative grid gap-4 border-b border-fg/10 py-10 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20"
+				class="project-row reveal group relative grid gap-4 border-b border-fg/10 first:border-t py-10 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20"
 				style={`--i: ${PROJECTS_HEADER_STEP + 1 + i}`}
 				data-reveal-key={`/projects/${project.id}`}
 				>
@@ -254,10 +254,12 @@ const PROJECTS_HEADER_STEP = recentPosts.length + 2;
 		transition: transform 250ms ease-out;
 	}
 
+	/* Hover lines disabled for now; uncomment to re-enable
 	.project-row:hover::before,
 	.project-row:focus-visible::before {
 		transform: scaleY(1);
 	}
+	*/
 
 	/* Same idea for post cards: a bar under the card that grows out from the center */
 	.post-card::after {
@@ -265,7 +267,7 @@ const PROJECTS_HEADER_STEP = recentPosts.length + 2;
 		position: absolute;
 		left: 0.25rem;
 		right: 0.25rem;
-		bottom: -6px;
+		bottom: -9px;
 		height: 2px;
 		background: var(--color-accent);
 		transform: scaleX(0);
@@ -273,10 +275,12 @@ const PROJECTS_HEADER_STEP = recentPosts.length + 2;
 		transition: transform 250ms ease-out;
 	}
 
+	/* Hover lines disabled for now; uncomment to re-enable
 	.post-card:hover::after,
 	.post-card:focus-visible::after {
 		transform: scaleX(1);
 	}
+	*/
 
 	@media (prefers-reduced-motion: reduce) {
 		.project-row::before,
