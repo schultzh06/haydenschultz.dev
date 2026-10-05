@@ -4,9 +4,11 @@ import Layout from '../layouts/Layout.astro';
 import StackMarquee from '../components/StackMarquee.astro';
 import Hero from '../components/Hero.astro';
 import { Image } from 'astro:assets';
+import { formatDate, getRecentPosts } from '../utils/posts';
 
 const projects = (await getCollection('projects', ({ data }) => !data.draft))
 .sort((a, b) => a.data.order - b.data.order);
+const recentPosts = await getRecentPosts({ limit: 3 });
 ---
 
 <Layout title="Portfolio - Hayden Schultz">
@@ -15,6 +17,28 @@ const projects = (await getCollection('projects', ({ data }) => !data.draft))
 		<Hero />
 
 		<StackMarquee />
+
+		<!-- Recent posts: kept to compact one-line rows so projects stay above the fold -->
+		{recentPosts.length > 0 && (
+			<section class="mt-12 grid gap-4 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+				<div class="flex items-baseline justify-between lg:block">
+					<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/Posts</p>
+					<a href="/posts" class="font-mono text-xs underline underline-offset-4 hover:text-accent lg:mt-2 lg:inline-block">ALL POSTS &rarr;</a>
+				</div>
+
+				<ul class="border-t border-fg/10">
+					{recentPosts.map((post) => (
+						<li class="border-b border-fg/10">
+							<a href={`/posts/${post.id}`} class="group flex items-baseline gap-4 py-2.5">
+								<span class="w-24 shrink-0 font-mono text-xs text-fg/50">{formatDate(post.data.published)}</span>
+								<span class="min-w-0 truncate transition-colors group-hover:text-accent">{post.data.title}</span>
+								<span class="ml-auto font-mono text-accent transition-transform duration-200 group-hover:translate-x-1 motion-reduce:transform-none" aria-hidden="true">&rarr;</span>
+							</a>
+						</li>
+					))}
+				</ul>
+			</section>
+		)}
 
 		<!-- Projects Header/Divider -->
 		<div class="mt-12 grid gap-4 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">

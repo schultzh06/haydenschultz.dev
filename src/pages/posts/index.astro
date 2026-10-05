@@ -1,0 +1,197 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { formatDate, getRecentPosts } from '../../utils/posts';
+
+const posts = await getRecentPosts();
+
+// Map project ids -> titles so filter chips and cards show readable names
+const projects = await getCollection('projects');
+const projectTitles = new Map(projects.map((p) => [p.id, p.data.title]));
+
+// Only offer filters that actually have posts behind them
+const projectIds = [...new Set(posts.flatMap((p) => (p.data.project ? [p.data.project.id] : [])))];
+const tags = [...new Set(posts.flatMap((p) => p.data.tags))].sort();
+---
+
+<Layout title="Posts - Hayden Schultz" description="Writing and project notes by Hayden Schultz.">
+    <article class="mx-auto max-w-5xl px-6 pb-24 pt-8">
+        <div class="grid gap-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+
+            <!-- Filter sidebar -->
+            <aside class="min-w-0 lg:sticky lg:top-25 lg:h-fit">
+                <a href="/" class="font-mono text-sm text-fg/50 transition-colors hover:text-accent">
+                    &larr; Back
+                </a>
+
+                <div class="mt-3 h-px w-full bg-fg/15" />
+
+                <div class="mt-4 space-y-6 font-mono text-xs">
+                    <label class="block">
+                        <span class="uppercase tracking-[0.15em] text-fg/40">Search</span>
+                        <input
+                            id="post-search"
+                            type="search"
+                            placeholder="title, description..."
+                            class="mt-2 w-full rounded-sm border border-fg/15 bg-transparent px-2 py-1.5 outline-none focus:border-accent"
+                        />
+                    </label>
+
+                    {projectIds.length > 0 && (
+                        <div>
+                            <p class="uppercase tracking-[0.15em] text-fg/40">Project</p>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                {projectIds.map((id) => (
+                                    <button type="button" class="filter-chip" data-filter="project" data-value={id}>
+                                        {projectTitles.get(id) ?? id}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {tags.length > 0 && (
+                        <div>
+                            <p class="uppercase tracking-[0.15em] text-fg/40">Tag</p>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                {tags.map((tag) => (
+                                    <button type="button" class="filter-chip" data-filter="tag" data-value={tag}>
+                                        #{tag}
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    <button id="filter-clear" type="button" class="hidden text-fg/50 underline underline-offset-4 hover:text-accent">
+                        Clear filters
+                    </button>
+                </div>
+            </aside>
+
+            <!-- Post list -->
+            <div class="min-w-0">
+                <header class="mt-2 lg:mt-8">
+                    <h1 class="mt-2 text-4xl sm:text-5xl">Posts</h1>
+                    <p class="mt-4 text-lg leading-relaxed text-fg/70">Writing, project notes, and deep dives.</p>
+                </header>
+
+                <ul id="post-list" class="mt-10 space-y-8">
+                    {posts.map((post) => {
+                        const { title, description, published, project, tags } = post.data;
+                        return (
+                            <li
+                                data-project={project?.id ?? ''}
+                                data-tags={tags.join(' ')}
+                                data-search={`${title} ${description}`.toLowerCase()}
+                            >
+                                <a href={`/posts/${post.id}`} class="group block">
+                                    <p class="font-mono text-xs text-fg/50">
+                                        {formatDate(published)}
+                                        {project && <span> · {projectTitles.get(project.id) ?? project.id}</span>}
+                                    </p>
+                                    <h2 class="mt-1 text-2xl transition-colors group-hover:text-accent">{title}</h2>
+                                    <p class="mt-2 text-sm leading-relaxed text-fg/70">{description}</p>
+                                </a>
+                                {tags.length > 0 && (
+                                    <p class="mt-2 font-mono text-xs text-fg/40">{tags.map((t) => `#${t}`).join(' ')}</p>
+                                )}
+                            </li>
+                        );
+                    })}
+                </ul>
+
+                <p id="post-empty" class="mt-10 hidden font-mono text-sm text-fg/50">No posts match those filters.</p>
+            </div>
+
+        </div>
+    </article>
+</Layout>
+
+<script>
+    // Filter state lives in the URL (?project=docket&tag=go&q=parser) so filtered views are linkable.
+    function bindPostFilters() {
+        const list = document.getElementById('post-list');
+        if (!list || list.dataset.filtersBound) return;
+        list.dataset.filtersBound = 'true';
+
+        const items = Array.from(list.querySelectorAll<HTMLLIElement>('li'));
+        const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('.filter-chip'));
+        const search = document.getElementById('post-search') as HTMLInputElement | null;
+        const empty = document.getElementById('post-empty');
+        const clear = document.getElementById('filter-clear');
+
+        const params = new URLSearchParams(location.search);
+        if (search) search.value = params.get('q') ?? '';
+
+        const apply = () => {
+            const project = params.get('project');
+            const tag = params.get('tag');
+            const q = params.get('q')?.trim().toLowerCase();
+
+            let visible = 0;
+            items.forEach((item) => {
+                const match =
+                    (!project || item.dataset.project === project) &&
+                    (!tag || item.dataset.tags?.split(' ').includes(tag)) &&
+                    (!q || item.dataset.search?.includes(q));
+                item.hidden = !match;
+                if (match) visible++;
+            });
+
+            chips.forEach((chip) => {
+                const active = params.get(chip.dataset.filter!) === chip.dataset.value;
+                chip.classList.toggle('is-active', active);
+                chip.setAttribute('aria-pressed', String(active));
+            });
+
+            empty?.classList.toggle('hidden', visible > 0);
+            clear?.classList.toggle('hidden', params.size === 0);
+
+            const query = params.toString();
+            history.replaceState(history.state, '', query ? `?${query}` : location.pathname);
+        };
+
+        chips.forEach((chip) => {
+            chip.addEventListener('click', () => {
+                const key = chip.dataset.filter!;
+                const value = chip.dataset.value!;
+                // Clicking the active chip turns that filter off
+                params.get(key) === value ? params.delete(key) : params.set(key, value);
+                apply();
+            });
+        });
+
+        search?.addEventListener('input', () => {
+            search.value ? params.set('q', search.value) : params.delete('q');
+            apply();
+        });
+
+        clear?.addEventListener('click', () => {
+            [...params.keys()].forEach((key) => params.delete(key));
+            if (search) search.value = '';
+            apply();
+        });
+
+        apply();
+    }
+
+    document.addEventListener('astro:page-load', bindPostFilters);
+</script>
+
+<style>
+    .filter-chip {
+        border: 1px solid color-mix(in oklab, var(--color-fg) 15%, transparent);
+        border-radius: 2px;
+        padding: 0.2rem 0.5rem;
+        color: color-mix(in oklab, var(--color-fg) 70%, transparent);
+        cursor: pointer;
+        transition: color 0.15s, border-color 0.15s;
+    }
+
+    .filter-chip:hover,
+    .filter-chip.is-active {
+        border-color: var(--color-accent);
+        color: var(--color-accent);
+    }
+</style>

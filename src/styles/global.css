@@ -43,3 +43,73 @@ html.dark .astro-code span {
   font-weight: var(--shiki-dark-font-weight) !important;
   text-decoration: var(--shiki-dark-text-decoration) !important;
 }
+
+/* Rendered markdown body (project + post pages) */
+.content h2 {
+    margin-top: 2.5rem;
+    font-size: 1.25rem;
+}
+
+.content h2:first-child {
+    margin-top: 0;
+}
+
+.content p {
+    margin-top: 1rem;
+    line-height: 1.75;
+    color: color-mix(in oklab, var(--color-fg) 80%, transparent);
+}
+
+.content ul,
+.content ol {
+    margin-top: 1rem;
+    padding-left: 1.25rem;
+    color: color-mix(in oklab, var(--color-fg) 80%, transparent);
+}
+
+.content ul {
+    list-style: disc;
+}
+
+.content ol {
+    list-style: decimal;
+}
+
+.content li + li {
+    margin-top: 0.5rem;
+}
+
+.content a {
+    color: var(--color-accent);
+    text-underline-offset: 2px;
+}
+
+.content code {
+    border-radius: 0.25rem;
+    background: color-mix(in oklab, var(--color-fg) 6%, transparent);
+    padding: 0.15em 0.4em;
+    font-size: 0.85em;
+}
+
+.content pre {
+    margin-top: 1rem;
+    overflow-x: auto;
+    border-radius: 0.5rem;
+    border: 1px solid color-mix(in oklab, var(--color-fg) 10%, transparent);
+    background: color-mix(in oklab, var(--color-fg) 4%, transparent);
+    padding: 1rem;
+    font-size: 0.8rem;
+    line-height: 1.6;
+}
+
+.content pre code {
+    background: none;
+    padding: 0;
+}
+
+.content blockquote {
+    margin-top: 1rem;
+    border-left: 2px solid var(--color-accent);
+    padding-left: 1rem;
+    color: color-mix(in oklab, var(--color-fg) 60%, transparent);
+}

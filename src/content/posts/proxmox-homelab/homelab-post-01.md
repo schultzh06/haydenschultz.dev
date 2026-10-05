@@ -1,9 +1,9 @@
 ---
-project: docket
-title: Docket Test Post 1
+project: proxmox-homelab
+title: Homelab Post 1
 description: Hello, World!
 published: 2026-10-05
-tags: [go, docket, test]
+tags: [pve, linux, systems]
 ---
 
 ## Test

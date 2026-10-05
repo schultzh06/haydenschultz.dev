@@ -1,9 +1,9 @@
 ---
-project: docket
-title: Docket Test Post 1
+project: insurance-cms
+title: CMS Post 1
 description: Hello, World!
 published: 2026-10-05
-tags: [go, docket, test]
+tags: [pve, linux, systems]
 ---
 
 ## Test
