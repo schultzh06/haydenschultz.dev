@@ -45,7 +45,7 @@ const morePosts = projectPosts.length - recentPosts.length;
                         &larr; Back
                     </a>
 
-                    <div class="mt-3 h-px w-full bg-fg/15" />
+                    <div class="mt-3 hidden h-px w-full bg-fg/15 lg:block" />
                 </div>
 
                 <!-- Role, Stack, Period and links: a compact bordered strip on mobile -->
@@ -129,7 +129,7 @@ const morePosts = projectPosts.length - recentPosts.length;
             <div class="project-main min-w-0">
 
                 <!-- Title and Hook (header) -->
-                <header class="area-header mt-8">
+                <header class="area-header mt-4 lg:mt-8">
                     <h1 transition:name={`title-${project.id}`} class="mt-2 text-4xl sm:text-5xl">
                         <!-- Inline glyph sized in em so it scales with the title; wrapped lines start at the icon's margin -->
                         <Icon name={projectGlyph(project.id)} transition:name={`glyph-${project.id}`} class="mr-[0.2em] inline-block h-[0.8em] w-[0.8em] align-[-0.06em] text-accent" />{title}
