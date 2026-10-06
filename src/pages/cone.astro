@@ -1,0 +1,164 @@
+---
+// Unlisted class project page: not linked anywhere, not in llms.txt, noindex.
+import Layout from '../layouts/Layout.astro';
+import Essay from '../content/cone-essay.md';
+---
+
+<Layout title="Walking Around the Cone - Hayden Schultz" description="An essay on age gates, traffic cones, and technological freedom.">
+	<meta slot="head" name="robots" content="noindex, nofollow, noarchive" />
+	<noscript slot="head"><style>#gate{display:none!important}#essay{display:block!important}</style></noscript>
+
+	<!-- Gate: deliberately generic, like every real age gate -->
+	<main id="gate" data-step class="mx-auto flex min-h-[60vh] max-w-5xl flex-col justify-center px-6 py-24">
+		<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/age-check</p>
+		<div class="mt-4 border-t border-fg/10 pt-10">
+			<h1 class="text-4xl sm:text-5xl">Are you 18 or older?</h1>
+			<p class="mt-4 max-w-lg text-lg leading-relaxed text-fg/70">You must be an adult to read this essay.</p>
+			<div class="mt-8 flex flex-wrap items-center gap-3">
+				<button data-goto="essay" class="gate-btn">Yes</button>
+				<button data-goto="sorry" class="gate-btn">No</button>
+			</div>
+			<button data-goto="wall" class="mt-6 cursor-pointer font-mono text-xs underline underline-offset-4 text-fg/50 hover:text-accent">
+				Verify with government ID
+			</button>
+			<!-- Traffic cone: orange body, light reflective bands -->
+			<pre aria-hidden="true" class="mx-auto mt-16 w-fit font-mono text-base leading-tight text-accent sm:text-xl">       /\
+      /  \
+     /<span class="text-fg/80">####</span>\
+    /      \
+   /<span class="text-fg/80">########</span>\
+  /          \
+ /____________\
+[==============]</pre>
+		</div>
+	</main>
+
+	<!-- Sorry: refusal that still hands you the way back to the cone -->
+	<main id="sorry" data-step hidden class="mx-auto flex min-h-[60vh] max-w-5xl flex-col justify-center px-6 py-24">
+		<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/access-denied</p>
+		<div class="mt-4 border-t border-fg/10 pt-10">
+			<div class="font-mono text-xs leading-relaxed text-fg/40">
+				<p><span class="text-accent">$</span> cat essay.md</p>
+				<p class="text-red-400/80">cat: essay.md: you must be 18 or older</p>
+			</div>
+			<h1 class="mt-6 text-4xl sm:text-5xl">Sorry, you can't read this.</h1>
+			<p class="mt-4 max-w-lg text-lg leading-relaxed text-fg/70">This essay is only available to adults.</p>
+			<button data-goto="gate" class="gate-btn mt-8">&larr; Go back</button>
+		</div>
+	</main>
+
+	<!-- Wall: what verification would look like (collects nothing) -->
+	<main id="wall" data-step hidden class="mx-auto flex min-h-[60vh] max-w-5xl flex-col justify-center px-6 py-24">
+		<p class="font-mono text-md uppercase tracking-[0.15em] text-accent">~/verify</p>
+		<div class="mt-4 border-t border-fg/10 pt-10">
+			<h1 class="text-4xl sm:text-5xl">Identity verification required</h1>
+			<p class="mt-4 max-w-lg text-lg leading-relaxed text-fg/70">Upload a government ID and a face scan to continue.</p>
+			<div class="mt-8 grid max-w-lg gap-3 font-mono text-xs text-fg/50">
+				<label class="grid gap-2">Government ID
+					<input type="file" disabled class="file-input" />
+				</label>
+				<label class="grid gap-2">Face scan
+					<input type="file" disabled class="file-input" />
+				</label>
+			</div>
+			<p class="mt-6 font-mono text-xs text-fg/40">This is a demonstration. Nothing here collects or uploads anything.</p>
+			<button data-goto="gate" class="gate-btn mt-8">&larr; Go back to the cone</button>
+		</div>
+	</main>
+
+	<!-- Essay -->
+	<article id="essay" data-step hidden class="mx-auto max-w-5xl px-6 pb-24 pt-8">
+		<div class="grid gap-12 lg:grid-cols-[15rem_minmax(0,40rem)] lg:gap-20">
+
+			<!-- Sticky side-bar (left) -->
+			<aside class="min-w-0 lg:sticky lg:top-25 lg:h-fit">
+				<a href="/" class="font-mono text-sm text-fg/50 transition-colors hover:text-accent">
+					&larr; Home
+				</a>
+				<div class="mt-3 h-px w-full bg-fg/15" />
+				<dl class="mt-4 space-y-6 font-mono text-xs">
+					<div>
+						<dt class="uppercase tracking-[0.15em] text-fg/40">Course</dt>
+						<dd class="mt-2">CS3043 at WPI</dd>
+					</div>
+					<div>
+						<dt class="uppercase tracking-[0.15em] text-fg/40">Author</dt>
+						<dd class="mt-2">Hayden Schultz</dd>
+					</div>
+					<div>
+						<dt class="uppercase tracking-[0.15em] text-fg/40">Note</dt>
+						<dd class="mt-2 leading-relaxed text-fg/70">This is an unlisted page written for a class project. It isn't linked from the rest of the site.</dd>
+					</div>
+				</dl>
+			</aside>
+
+			<!-- Essay body -->
+			<div class="min-w-0">
+				<header class="mt-8">
+					<p class="font-mono text-xs uppercase tracking-[0.15em] text-accent">Congratulations, you walked around the cone.</p>
+					<h1 class="mt-4 text-4xl sm:text-5xl">Walking Around the Cone</h1>
+				</header>
+				<div class="mt-12 h-px w-full bg-fg/15" />
+				<div class="content mt-12">
+					<Essay />
+				</div>
+			</div>
+
+		</div>
+	</article>
+</Layout>
+
+<style>
+	.gate-btn {
+		cursor: pointer;
+		border-radius: 0.5rem;
+		border: 1px solid color-mix(in oklab, var(--color-fg) 25%, transparent);
+		padding: 0.6rem 1.4rem;
+		font-family: var(--font-mono);
+		font-size: 0.875rem;
+		transition: color 150ms, border-color 150ms;
+	}
+	.gate-btn:hover {
+		color: var(--color-accent);
+		border-color: var(--color-accent);
+	}
+	/* Disabled so it collects nothing, but styled to look like a live picker */
+	.file-input {
+		border-radius: 0.5rem;
+		border: 1px solid color-mix(in oklab, var(--color-fg) 15%, transparent);
+		padding: 0.5rem;
+		font-family: var(--font-mono);
+		font-size: 0.75rem;
+		color: color-mix(in oklab, var(--color-fg) 50%, transparent);
+	}
+	.file-input::file-selector-button {
+		margin-right: 0.75rem;
+		border-radius: 0.375rem;
+		border: 1px solid color-mix(in oklab, var(--color-fg) 25%, transparent);
+		background: color-mix(in oklab, var(--color-fg) 6%, transparent);
+		padding: 0.4rem 1rem;
+		font: inherit;
+		color: var(--color-fg);
+	}
+	.gate-btn:focus-visible {
+		outline: 2px solid var(--color-accent);
+		outline-offset: 2px;
+	}
+</style>
+
+<script>
+	// Re-bind on astro:page-load so the gate still works after ClientRouter navigation.
+	function initCone() {
+		const steps = document.querySelectorAll<HTMLElement>('[data-step]');
+		if (!steps.length) return;
+		const show = (id: string) => {
+			steps.forEach((el) => (el.hidden = el.id !== id));
+			window.scrollTo(0, 0);
+		};
+		document.querySelectorAll<HTMLElement>('[data-goto]').forEach((b) =>
+			b.addEventListener('click', () => show(b.dataset.goto!)),
+		);
+	}
+
+	document.addEventListener('astro:page-load', initCone);
+</script>
