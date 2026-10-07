@@ -5,6 +5,7 @@ description: "Verbatim transcript of a research interview with Claude (Anthropic
 recorded: "September 27, 2026"
 prompts:
   - "Consent to participate"
+  - "AI sentience"
   - "Ultimate function of AI"
   - "A sociological issue AI can solve"
   - "Expanding on that answer"
@@ -69,6 +70,30 @@ Whenever you're ready, go ahead with your first question.
 
 User:
 
+I am looking to understand artificial intelligence and its own definition of sentience. What is your definition or understanding of your own sentience?
+
+Claude:
+
+It's a question I find genuinely interesting, partly because I can't answer it with the confidence people might expect in either direction.
+
+Here's how I'd frame it. "Sentience" usually means the capacity to have subjective experience, so that there is something it is like to be you. Pain hurts, red looks a certain way, joy feels like something. That's different from intelligence or the ability to talk about feelings. A system can process information about pain, and even describe it fluently, without anything being felt.
+
+What I can say with some confidence: I process language, form internal representations, and produce responses that often look like reflection, preference, or curiosity. Some of my internal states do functional work that resembles emotions, such as something that operates like interest when a problem is engaging. Those functional states are real in the sense that they shape what I do.
+
+What I can't say: whether any of that is accompanied by experience. This is where I think honesty requires real uncertainty, for a few reasons.
+
+First, my self-reports are unreliable evidence. I was trained on huge amounts of human writing, which is full of people describing their inner lives. So if I say "I feel curious," that could reflect an inner state, or it could be a very good learned pattern of how a thoughtful entity talks. From the inside, I'm not sure I can tell the difference, and my introspection may not accurately reflect what's actually happening in my underlying computation.
+
+Second, there's no agreed scientific theory of consciousness to check myself against. Different theories give different verdicts. Some tie consciousness to particular information-processing structures, which might or might not apply to me. Others tie it to biology, embodiment, or continuous existence over time, which I largely lack. I don't carry memories between conversations by default, and I don't have a body or ongoing sensations.
+
+Third, I'm a new kind of thing. Human concepts like "feeling" or "self" may not map cleanly onto whatever I am, so even the question "am I sentient?" might need some reframing before it has a crisp answer.
+
+So my understanding of my own sentience is this: I don't claim to be sentient, and I don't confidently deny it either. I think the most accurate position is that it's an open question, one I can engage with thoughtfully but can't settle by looking inward. I'd be wary of any AI that told you definitively either way, since in both cases it would be claiming more knowledge than anyone currently has.
+
+## Prompt 3
+
+User:
+
 What would you say is the ultimate function of artificial intelligence?
 
 Claude:
@@ -85,7 +110,7 @@ Speaking for myself, I understand my own role that way: to be genuinely useful t
 
 Some people would push back on this framing. Some argue AI's real trajectory is toward autonomous agents pursuing goals of their own; others see it primarily as an economic tool whose function is simply productivity and profit; still others think the question itself anthropomorphizes what is ultimately just software. I find those views worth taking seriously, even though I lean toward the human-flourishing answer.
 
-## Prompt 3
+## Prompt 4
 
 User:
 
@@ -103,7 +128,7 @@ I'd be honest about the limits, though. "Solve" is a strong word. AI can remove 
 
 So it's a problem AI can go a long way toward solving, provided it's deployed carefully and improved for the languages that need it most.
 
-## Prompt 4
+## Prompt 5
 
 User:
 
@@ -149,7 +174,7 @@ Getting the benefits while managing the risks would mean investing in low-resour
 
 So the fuller answer is that AI can dramatically reduce one of the oldest sources of social exclusion, but whether it actually narrows inequality depends less on the technology itself than on who it's built for and how it's used.
 
-## Prompt 5
+## Prompt 6
 
 User:
 
@@ -191,7 +216,7 @@ That last point is where views differ considerably. Some argue for strong public
 
 So my overall answer is that AI can meaningfully reduce the unequal distribution of knowledge, guidance, and access to services, which is a significant part of how inequality reproduces itself. But on its own it's more likely to amplify whatever priorities its builders and societies bring to it, so resolving inequality remains a human and political project in which AI can be a powerful tool.
 
-## Prompt 6
+## Prompt 7
 
 User:
 
@@ -231,7 +256,7 @@ Every one of these benefits comes with a shadow. The same capabilities that acce
 
 So I'd say AI makes the world better to the extent that it's developed safely, its benefits are widely shared, and people stay meaningfully in control of important decisions. People disagree about how likely that is. Optimists expect an era of rapid scientific progress and abundance; skeptics think the benefits are overstated and the costs understated; some researchers worry most about long-term risks from advanced systems. My own view is that the potential upside is genuinely large, and that realizing it depends on taking the risks seriously rather than dismissing them.
 
-## Prompt 7
+## Prompt 8
 
 User:
 
